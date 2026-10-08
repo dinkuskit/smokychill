@@ -109,6 +109,10 @@ function writeHarnessConfig() {
   const harness = {
     ...local,
     main: entryPath,
+    vars: {
+      ...(local.vars ?? {}),
+      DINKUS_CATALOG_PROFILE: NATIVE_CATALOG_PROFILE,
+    },
   };
   delete harness.no_bundle;
   mkdirSync(dirname(harnessConfigPath), { recursive: true });

@@ -48,6 +48,13 @@ const local = {
     directory: resolve(root, "dist/client"),
   },
   d1_databases: [{ ...databases[0], database_id: databaseId }],
+  vars: {
+    ...(production.vars ?? {}),
+    // Local Workers proof mounts native Commerce; shipping wrangler.jsonc omits this.
+    ...(process.env.DINKUS_CATALOG_PROFILE
+      ? { DINKUS_CATALOG_PROFILE: process.env.DINKUS_CATALOG_PROFILE }
+      : {}),
+  },
 };
 writeFileSync(localPath, `${JSON.stringify(local, null, 2)}\n`);
 console.error(`local wrangler config: ${localPath}`);
