@@ -11,8 +11,11 @@ import { resolveGuestCheckoutAdmission } from "./features/guest-cart/checkout-ad
 const NATIVE_GUEST_CHECKOUT_POST_PATH =
   /^\/_emdash\/api\/plugins\/dinkus-commerce\/checkout\/guest\/(prepare|start|status)$/;
 
-function applyLaunchIndexing(response: Response, runtime?: { env?: Record<string, unknown> }): Response {
-  const launchIndexable = runtime?.env?.DINKUS_LAUNCH_INDEXABLE === "1" || process.env.DINKUS_LAUNCH_INDEXABLE === "1";
+function applyLaunchIndexing(response: Response): Response {
+  // Astro 7's Cloudflare adapter removed Astro.locals.runtime.env. Keep the
+  // launch gate build-time/config-time driven and default to noindex.
+  const launchIndexable = import.meta.env.DINKUS_LAUNCH_INDEXABLE === "1" ||
+    process.env.DINKUS_LAUNCH_INDEXABLE === "1";
   if (!launchIndexable && response.headers.get("content-type")?.includes("text/html")) {
     response.headers.set("X-Robots-Tag", "noindex, nofollow");
   }
@@ -89,7 +92,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
     }
 
     const response = await next();
-    applyLaunchIndexing(response, (context.locals as { runtime?: { env?: Record<string, unknown> } }).runtime);
+    applyLaunchIndexing(response);
     applySecurityHeaders(response.headers);
     return response;
   }
@@ -123,6 +126,6 @@ export const onRequest = defineMiddleware(async (context, next) => {
   }
 
   const response = await next();
-  applyLaunchIndexing(response, (context.locals as { runtime?: { env?: Record<string, unknown> } }).runtime);
+  applyLaunchIndexing(response);
   return response;
 });
