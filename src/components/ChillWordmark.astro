@@ -14,7 +14,7 @@ const { size = "hero" } = Astro.props;
       <stop offset="1" stop-color="#76bfd7" />
     </linearGradient>
   </defs>
-  <text x="10" y="88" fill={`url(#chill-ice-${size})`} stroke="#2c7898" stroke-width={size === "header" ? 4 : 6} paint-order="stroke" stroke-linejoin="round" font-family="Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif" font-size="86" font-weight="900" letter-spacing="4">CHILL</text>
-  {size === "hero" && <path d="M48 88v10c0 7 2 12 8 12 7 0 11-8 11-22v-3zm75 0v13c0 10 2 17 9 17 8 0 12-10 12-27v-3zm161 0v9c0 8 2 14 9 14 7 0 11-9 11-23v-1zm70 0v6c0 7 2 12 8 12 6 0 9-7 9-18h-17z" fill="#79c5dc" stroke="#2c7898" stroke-width="2" stroke-linejoin="round" />}
+  <text x="10" y="88" fill={`url(#chill-ice-${size})`} stroke="#2c7898" stroke-width={size === "header" ? 9 : 6} paint-order="stroke" stroke-linejoin="round" font-family="Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif" font-size="86" font-weight="900" letter-spacing="4">CHILL</text>
+  {size === "hero" && <path d="M42 84v13c0 8 3 12 8 12 6 0 9-7 9-25v-1zm78 0v16c0 9 3 14 8 14 6 0 9-8 9-30zm167 0v12c0 8 3 12 8 12 6 0 9-7 9-24z" fill="#79c5dc" stroke="#2c7898" stroke-width="2" stroke-linejoin="round" />}
   <path d="M30 35l18-7m63 1 17-6m128 6 19-7m70 10 14-5" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".95" />
 </svg>
