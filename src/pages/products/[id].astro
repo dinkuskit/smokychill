@@ -6,8 +6,18 @@ import "../../features/store-shell/global.css";
 
 const merchandise = await getEmDashCollection<"merchandise", Record<string, unknown>>("merchandise", { status: "published" });
 const { profile, demonstrations, collections } = await loadStorefrontRouteContext(merchandise.entries);
-const collection = collections.find((group) => group.items.some((candidate) => productPath(candidate.id) === Astro.url.pathname));
-const item = collection?.items.find((candidate) => productPath(candidate.id) === Astro.url.pathname);
+const herbalIceFallback = {
+  id: "herbal-ice",
+  title: "Herbal Ice Cooling Balm",
+  description: "A cooling topical balm with menthol and camphor, made with CBD isolate (approximately 1,000 mg per 4 oz jar). Fans nicknamed it “the ice balm.”",
+  illustration: "balm",
+  availabilitySource: "preview",
+};
+const cmsCollection = collections.find((group) => group.items.some((candidate) => productPath(candidate.id) === Astro.url.pathname));
+const cmsItem = cmsCollection?.items.find((candidate) => productPath(candidate.id) === Astro.url.pathname);
+const item = cmsItem ?? (Astro.url.pathname === "/products/herbal-ice" ? herbalIceFallback : undefined);
+const collection = cmsCollection ?? (item ? { name: "Herbal Ice", items: [item] } : undefined);
+const collectionHref = cmsCollection ? collectionPath(collection.name) : "/";
 if (!item) Astro.response.status = 404;
 const managed = item?.availabilitySource === "managed" ? demonstrations?.managed ?? null : null;
 const unmanaged = item?.availabilitySource === "unmanaged" ? demonstrations?.unmanaged ?? null : null;
@@ -45,7 +55,7 @@ const status = managed ? `${managed.inventory.available} available` : unmanaged 
   <body data-storefront-profile={profile}>
     <SiteHeader />
     <main class="product-page">
-      <nav class="browse-breadcrumb" aria-label="Breadcrumb"><a href="/">Catalog</a><span aria-hidden="true">/</span>{collection && <><a href={collectionPath(collection.name)}>{collection.name}</a><span aria-hidden="true">/</span></>}<span aria-current="page">{item?.title ?? "Not found"}</span></nav>
+      <nav class="browse-breadcrumb" aria-label="Breadcrumb"><a href="/">Catalog</a><span aria-hidden="true">/</span>{collection && <><a href={collectionHref}>{collection.name}</a><span aria-hidden="true">/</span></>}<span aria-current="page">{item?.title ?? "Not found"}</span></nav>
       {item && collection ? (
         <article class="product-detail" data-product-page={item.id} data-product-source={item.availabilitySource}>
           <div class="product-detail__visual"><img src="/images/herbal-ice-hero.webp" alt="Herbal Ice 4 oz cooling balm jar" width="800" height="800" /></div>
@@ -60,7 +70,7 @@ const status = managed ? `${managed.inventory.available} available` : unmanaged 
             <p class="product-detail__notice">Checkout unavailable until a server-owned Payments binding exists. Product copy remains a CMS draft.</p>
             <div class="product-detail__facts"><h2>Details</h2><ul><li>Menthol (10%) and camphor (5%)</li><li>CBD isolate, approximately 1,000 mg per 4 oz jar</li><li>Topical use only; not for ingestion</li><li>Batch COA: <strong>pending</strong></li></ul></div>
             <div class="product-detail__facts"><h2>How to use</h2><p>Apply to skin as desired. Wash hands after application. Avoid eyes and mucous membranes. For external use only. Keep out of reach of children.</p></div>
-            <a class="product-detail__back" href={collectionPath(collection.name)}>← Back to {collection.name}</a>
+            <a class="product-detail__back" href={collectionHref}>← Back home</a>
           </div>
         </article>
       ) : <><h1>Product not found</h1><p>This product is not published or does not exist.</p><a href="/">Return to catalog</a></>}
