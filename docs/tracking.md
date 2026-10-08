@@ -10,8 +10,8 @@ the approved hosting/CI configuration:
 | `PUBLIC_META_PIXEL_ID` | Meta Pixel | Loads the browser pixel and sends `PageView` |
 | `PUBLIC_X_PIXEL_ID` | X Pixel | Initializes the X pixel queue |
 
-The component reads Cloudflare runtime env first and build-time `PUBLIC_*`
-values second. Empty values render no tracking scripts. This keeps local
+The component reads build-time `PUBLIC_*` values. Empty values render no
+tracking scripts. This keeps local
 verification and previews credential-free and prevents placeholder IDs from
 creating traffic in an owner's account.
 

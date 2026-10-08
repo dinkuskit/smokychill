@@ -1,10 +1,10 @@
 ---
-type RuntimeEnv = Record<string, string | undefined>;
-const runtimeEnv = (Astro.locals as { runtime?: { env?: RuntimeEnv } }).runtime?.env ?? {};
-const env = (key: string) => runtimeEnv[key] ?? import.meta.env[key];
-const ga4Id = env("PUBLIC_GA4_MEASUREMENT_ID");
-const metaPixelId = env("PUBLIC_META_PIXEL_ID");
-const xPixelId = env("PUBLIC_X_PIXEL_ID");
+// Astro's Cloudflare adapter no longer exposes runtime bindings through
+// Astro.locals.runtime.env. Keep measurement IDs build-time env-bound and
+// empty by default; no browser placeholder can activate a tracker.
+const ga4Id = import.meta.env.PUBLIC_GA4_MEASUREMENT_ID;
+const metaPixelId = import.meta.env.PUBLIC_META_PIXEL_ID;
+const xPixelId = import.meta.env.PUBLIC_X_PIXEL_ID;
 ---
 {ga4Id && (
   <>
