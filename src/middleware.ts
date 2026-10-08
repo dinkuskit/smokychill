@@ -6,20 +6,65 @@ import {
   isExactGuestCheckoutPath,
   slashlessRedirectPath,
 } from "./features/security/public-boundary.js";
+import {
+  applyLaunchNoIndexHeaders,
+  launchIndexableEnabled,
+  paymentsUnavailableEnabled,
+} from "./features/security/launch-indexing.js";
 import { resolveGuestCheckoutAdmission } from "./features/guest-cart/checkout-admission.js";
 
 const NATIVE_GUEST_CHECKOUT_POST_PATH =
   /^\/_emdash\/api\/plugins\/dinkus-commerce\/checkout\/guest\/(prepare|start|status)$/;
+const SITEMAP_PATH = /^\/sitemap(?:-[a-z0-9-]+)?\.xml$/;
+
+function envRecord(): Record<string, unknown> {
+  return {
+    ...process.env,
+    ...(import.meta.env as Record<string, unknown>),
+  };
+}
+
+function launchSitemapBlockedResponse(): Response {
+  // While the stand-up is noindex, do not advertise crawl targets.
+  const response = new Response("Not Found", {
+    status: 404,
+    headers: {
+      "Content-Type": "text/plain; charset=utf-8",
+      "Cache-Control": "no-store",
+    },
+  });
+  applyLaunchNoIndexHeaders(response.headers, envRecord());
+  applySecurityHeaders(response.headers);
+  return response;
+}
 
 function applyLaunchIndexing(response: Response): Response {
-  // Astro 7's Cloudflare adapter removed Astro.locals.runtime.env. Keep the
-  // launch gate build-time/config-time driven and default to noindex.
-  const launchIndexable = import.meta.env.DINKUS_LAUNCH_INDEXABLE === "1" ||
-    process.env.DINKUS_LAUNCH_INDEXABLE === "1";
-  if (!launchIndexable && response.headers.get("content-type")?.includes("text/html")) {
-    response.headers.set("X-Robots-Tag", "noindex, nofollow");
-  }
+  applyLaunchNoIndexHeaders(response.headers, envRecord());
   return response;
+}
+
+function checkoutUnavailableResponse(): Response {
+  const response = new Response(
+    JSON.stringify({ error: "Checkout is not available yet.", code: "PAYMENTS_UNAVAILABLE" }),
+    {
+      status: 503,
+      headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
+    },
+  );
+  applyLaunchNoIndexHeaders(response.headers, envRecord());
+  applySecurityHeaders(response.headers);
+  return response;
+}
+
+function guestCheckoutBlocked(context: {
+  locals: { emdash?: Parameters<typeof resolveGuestCheckoutAdmission>[0]["runtime"] };
+}): boolean {
+  if (paymentsUnavailableEnabled(envRecord())) return true;
+  return !resolveGuestCheckoutAdmission({
+    runtime: context.locals.emdash,
+    // Core has not supplied the same-namespace catalog/config authority.
+    catalog: null,
+  });
 }
 
 export const onRequest = defineMiddleware(async (context, next) => {
@@ -28,6 +73,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
     pathForms = decodedForms(context.url.pathname);
   } catch {
     const response = Response.json({ error: "Invalid path." }, { status: 403 });
+    applyLaunchNoIndexHeaders(response.headers, envRecord());
     applySecurityHeaders(response.headers);
     return response;
   }
@@ -42,9 +88,18 @@ export const onRequest = defineMiddleware(async (context, next) => {
         "Cache-Control": "no-store",
       },
     });
+    applyLaunchNoIndexHeaders(response.headers, envRecord());
     applySecurityHeaders(response.headers);
     return response;
   }
+  if (
+    !launchIndexableEnabled(envRecord()) &&
+    pathForms.some((path) => SITEMAP_PATH.test(path)) &&
+    (context.request.method === "GET" || context.request.method === "HEAD")
+  ) {
+    return launchSitemapBlockedResponse();
+  }
+
   const isCloudflare =
     process.env.DINKUS_HOSTING_PROFILE === "cloudflare" ||
     process.env.ASTRO_ADAPTER === "cloudflare" ||
@@ -70,25 +125,13 @@ export const onRequest = defineMiddleware(async (context, next) => {
           headers: { "Content-Type": "application/json" },
         },
       );
+      applyLaunchNoIndexHeaders(response.headers, envRecord());
       applySecurityHeaders(response.headers);
       return response;
     }
 
-    if (isExactGuestCheckoutPath(url.pathname) &&
-        !resolveGuestCheckoutAdmission({
-          runtime: context.locals.emdash,
-          // Core has not supplied the same-namespace catalog/config authority.
-          catalog: null,
-        })) {
-      const response = new Response(
-        JSON.stringify({ error: "Checkout is not available yet." }),
-        {
-          status: 503,
-          headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
-        },
-      );
-      applySecurityHeaders(response.headers);
-      return response;
+    if (isExactGuestCheckoutPath(url.pathname) && guestCheckoutBlocked(context)) {
+      return checkoutUnavailableResponse();
     }
 
     const response = await next();
@@ -97,20 +140,8 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return response;
   }
 
-  if (isExactGuestCheckoutPath(context.url.pathname) &&
-      !resolveGuestCheckoutAdmission({
-        runtime: context.locals.emdash,
-        catalog: null,
-      })) {
-    const response = new Response(
-      JSON.stringify({ error: "Checkout is not available yet." }),
-      {
-        status: 503,
-        headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
-      },
-    );
-    applySecurityHeaders(response.headers);
-    return response;
+  if (isExactGuestCheckoutPath(context.url.pathname) && guestCheckoutBlocked(context)) {
+    return checkoutUnavailableResponse();
   }
 
   if (pathForms.some((path) => NATIVE_GUEST_CHECKOUT_POST_PATH.test(path))) {
@@ -121,6 +152,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
         headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
       },
     );
+    applyLaunchNoIndexHeaders(response.headers, envRecord());
     applySecurityHeaders(response.headers);
     return response;
   }

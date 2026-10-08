@@ -368,4 +368,42 @@ describe("worker boundary handler", () => {
     applySecurityHeaders(headers, { DINKUS_DEMO_NOINDEX: "1" });
     expect(headers.get("X-Robots-Tag")).toBe("noindex, nofollow");
   });
+
+  it("rejects guest checkout when PAYMENTS_UNAVAILABLE is 1", async () => {
+    astroFetch.mockClear();
+    const limiter = { limit: vi.fn().mockResolvedValue({ success: true }) };
+    const request = new Request(
+      "http://demo.dinkuskit.com/_emdash/api/plugins/r_gshdrqaldna3r7sn/checkout/guest/start",
+      {
+        method: "POST",
+        headers: { "cf-connecting-ip": "198.51.100.1" },
+      },
+    );
+    const res = await worker.fetch(
+      request,
+      { RATE_LIMITER: limiter, PAYMENTS_UNAVAILABLE: "1" },
+      dummyCtx,
+    );
+    expect(res.status).toBe(503);
+    expect(await res.json()).toEqual({
+      error: "Checkout is not available yet.",
+      code: "PAYMENTS_UNAVAILABLE",
+    });
+    expect(res.headers.get("X-Robots-Tag")).toBe("noindex, nofollow");
+    expect(astroFetch).not.toHaveBeenCalled();
+  });
+
+  it("adds launch noindex on allowed Worker responses when DINKUS_LAUNCH_INDEXABLE is 0", async () => {
+    const limiter = { limit: vi.fn().mockResolvedValue({ success: true }) };
+    const request = new Request("http://demo.dinkuskit.com/", {
+      headers: { "cf-connecting-ip": "198.51.100.1" },
+    });
+    const res = await worker.fetch(
+      request,
+      { RATE_LIMITER: limiter, DINKUS_LAUNCH_INDEXABLE: "0" },
+      dummyCtx,
+    );
+    expect(res.status).toBe(200);
+    expect(res.headers.get("X-Robots-Tag")).toBe("noindex, nofollow");
+  });
 });

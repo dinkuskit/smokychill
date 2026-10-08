@@ -1,0 +1,8 @@
+---
+import { launchIndexableEnabled } from "../features/security/launch-indexing.js";
+
+const indexable =
+  launchIndexableEnabled(import.meta.env as Record<string, unknown>) ||
+  launchIndexableEnabled(process.env);
+---
+{!indexable && <meta name="robots" content="noindex, nofollow" />}

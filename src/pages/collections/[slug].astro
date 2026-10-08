@@ -1,7 +1,9 @@
 ---
 import { getEmDashCollection } from "emdash";
 import MerchCatalog from "../../features/store-shell/MerchCatalog.astro";
-import { GuestCartNav } from "../../features/guest-cart/ui.ts";
+import SiteHeader from "../../components/SiteHeader.astro";
+import SiteFooter from "../../components/SiteFooter.astro";
+import LaunchRobotsMeta from "../../components/LaunchRobotsMeta.astro";
 import { STORE_TITLE, collectionPath, loadStorefrontRouteContext } from "../../features/store-shell/index.js";
 import "../../features/store-shell/global.css";
 
@@ -18,11 +20,11 @@ const unmanaged = demonstrations?.unmanaged;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={collection ? `Explore ${collection.name} in the DinkusKit merchandise catalog.` : "Collection not found."} />
+    <LaunchRobotsMeta />
     <title>{collection ? `${collection.name} | ${STORE_TITLE}` : `Collection not found | ${STORE_TITLE}`}</title>
   </head>
   <body data-storefront-profile={profile}>
-    <div class="store-demo-banner" data-store-demo-banner role="status">Demo / Test Store &mdash; Synthetic demonstration. Purchases and checkout are unavailable.</div>
-    <header class="store-header"><a class="store-header__mark" href="/">DinkusKit / Store</a><nav class="store-header__nav" aria-label="Store"><span class="store-header__status">Local integration proof</span><GuestCartNav /></nav></header>
+    <SiteHeader />
     <main class="browse-page">
       <nav class="browse-breadcrumb" aria-label="Breadcrumb"><a href="/">Catalog</a><span aria-hidden="true">/</span><span aria-current="page">{collection?.name ?? "Not found"}</span></nav>
       {collection ? (
@@ -33,7 +35,7 @@ const unmanaged = demonstrations?.unmanaged;
         </>
       ) : <><h1>Collection not found</h1><p>This collection is not published or does not exist.</p><a href="/">Return to catalog</a></>}
     </main>
-    <footer class="store-footer">Merchandise copy is editable in EmDash; transactional facts remain in Commerce{profile === "proof" ? " and Inventory" : ""}.</footer>
+    <SiteFooter />
   </body>
 </html>
 <style>

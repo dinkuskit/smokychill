@@ -207,6 +207,12 @@ describe("demo seed resource identity", () => {
     expect(committed).not.toContain("smokychill-public-20260930");
     expect(committed).toContain("2026-09-30");
     expect(committed).toContain("run_worker_first");
+    expect(committed).toContain("\"workers_dev\": false");
+    expect(committed).toContain("\"preview_urls\": false");
+    expect(committed).toContain("smokychill.com");
+    expect(committed).toContain("www.smokychill.com");
+    expect(committed).toContain("\"custom_domain\": true");
+    expect(committed).toContain("PLACEHOLDER: <REPLACE_AFTER_wrangler_d1_create_smokychill>");
   });
 
   it("rejects a remote target that is not the reviewed fresh demo", () => {

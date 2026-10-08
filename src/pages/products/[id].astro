@@ -2,6 +2,7 @@
 import { getEmDashCollection } from "emdash";
 import SiteHeader from "../../components/SiteHeader.astro";
 import SiteFooter from "../../components/SiteFooter.astro";
+import LaunchRobotsMeta from "../../components/LaunchRobotsMeta.astro";
 import { STORE_TITLE, collectionPath, loadStorefrontRouteContext, productPath } from "../../features/store-shell/index.js";
 import { readPublicVariantProduct } from "../../features/commerce-catalog/variant-public.js";
 import { formatUsdMinor } from "../../features/store-shell/price.js";
@@ -72,6 +73,7 @@ const status = managed ? `${managed.inventory.available} available` : unmanaged 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={item?.description ?? "Product not found."} />
+    <LaunchRobotsMeta />
     {item && <link rel="canonical" href={`${Astro.site ?? Astro.url.origin}/products/herbal-ice`} />}
     <title>{item ? `${item.title} | ${STORE_TITLE}` : `Product not found | ${STORE_TITLE}`}</title>
     {item && commerceVariants && <script type="application/ld+json" set:html={JSON.stringify({

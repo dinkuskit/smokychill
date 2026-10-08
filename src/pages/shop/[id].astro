@@ -1,7 +1,10 @@
 ---
 import { readCommerceCatalog, availabilityLabels } from "../../features/commerce-catalog/index.js";
 import ProductMedia from "../../features/commerce-catalog/ProductMedia.astro";
-import { AddToCart, GuestCartNav } from "../../features/guest-cart/ui.ts";
+import { AddToCart } from "../../features/guest-cart/ui.ts";
+import SiteHeader from "../../components/SiteHeader.astro";
+import SiteFooter from "../../components/SiteFooter.astro";
+import LaunchRobotsMeta from "../../components/LaunchRobotsMeta.astro";
 import { STORE_TITLE, readStorefrontProfile } from "../../features/store-shell/index.js";
 import "../../features/store-shell/global.css";
 let unavailable = false;
@@ -13,10 +16,14 @@ const profile = readStorefrontProfile();
 ---
 <!doctype html>
 <html lang="en">
-<head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width" /><title>{product?.name ?? "Product unavailable"} | {STORE_TITLE}</title></head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width" />
+  <LaunchRobotsMeta />
+  <title>{product?.name ?? "Product unavailable"} | {STORE_TITLE}</title>
+</head>
 <body data-storefront-profile={profile}>
-<div class="store-demo-banner" data-store-demo-banner role="status">Demo / Test Store &mdash; Synthetic demonstration. Purchases and checkout are unavailable.</div>
-<header class="store-header"><a class="store-header__mark" href="/">DinkusKit / Store</a><nav class="store-header__nav" aria-label="Store"><GuestCartNav /></nav></header>
+<SiteHeader />
 <main class="shop-detail">
 <a href="/#commerce-catalog">← Back to shop</a>
 {product ? <article data-commerce-product={product.id}>
@@ -29,6 +36,7 @@ const profile = readStorefrontProfile();
 <p>Checkout is not available yet.</p>
 </article> : <><h1>{unavailable ? "Catalog temporarily unavailable" : "Product not found"}</h1><p>{unavailable ? "Please try again later." : "This product is not publicly listed."}</p></>}
 </main>
+<SiteFooter />
 </body>
 </html>
 <style>

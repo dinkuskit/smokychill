@@ -6,8 +6,16 @@ import {
 import {
   applySecurityHeaders,
   evaluatePublicBoundary,
+  isExactGuestCheckoutPath,
   slashlessRedirectPath,
 } from "./features/security/public-boundary.js";
+import {
+  applyLaunchNoIndexHeaders,
+  launchIndexableEnabled,
+  paymentsUnavailableEnabled,
+} from "./features/security/launch-indexing.js";
+
+const SITEMAP_PATH = /^\/sitemap(?:-[a-z0-9-]+)?\.xml$/;
 import type { ScheduledWakeReconciliationOptions } from "./features/test-checkout-host/index.js";
 import { runScheduledWakeReconciliation } from "./features/test-checkout-host/scheduler-driver.js";
 
@@ -66,13 +74,15 @@ function createErrorResponse(
   message: string,
   extraHeaders: Record<string, string> = {},
   env: WorkerEnv = {},
+  body: Record<string, unknown> = { error: message },
 ): Response {
   const headers = new Headers({
     "Content-Type": "application/json",
     ...extraHeaders,
   });
+  applyLaunchNoIndexHeaders(headers, env);
   applySecurityHeaders(headers, env);
-  return new Response(JSON.stringify({ error: message }), {
+  return new Response(JSON.stringify(body), {
     status,
     headers,
   });
@@ -127,6 +137,7 @@ export default {
           "Cache-Control": "no-store",
         },
       });
+      applyLaunchNoIndexHeaders(response.headers, env);
       applySecurityHeaders(response.headers, env);
       return response;
     }
@@ -140,6 +151,28 @@ export default {
       return createErrorResponse(check.status, check.reason ?? "Forbidden", {}, env);
     }
 
+    if (
+      !launchIndexableEnabled(env) &&
+      SITEMAP_PATH.test(url.pathname) &&
+      (request.method === "GET" || request.method === "HEAD")
+    ) {
+      return createErrorResponse(404, "Not Found", { "Cache-Control": "no-store" }, env);
+    }
+
+    if (
+      isExactGuestCheckoutPath(url.pathname) &&
+      paymentsUnavailableEnabled(env) &&
+      (request.method === "POST" || request.method === "PUT" || request.method === "PATCH")
+    ) {
+      return createErrorResponse(
+        503,
+        "Checkout is not available yet.",
+        { "Cache-Control": "no-store" },
+        env,
+        { error: "Checkout is not available yet.", code: "PAYMENTS_UNAVAILABLE" },
+      );
+    }
+
     // 5. Delegate to Astro Cloudflare server handler
     const response = await (astroHandler as { fetch(req: Request, env: unknown, ctx: unknown): Promise<Response> }).fetch(
       request,
@@ -147,8 +180,9 @@ export default {
       ctx,
     );
 
-    // 6. Enforce security response headers
+    // 6. Enforce security response headers and launch noindex
     const mutableResponse = new Response(response.body, response);
+    applyLaunchNoIndexHeaders(mutableResponse.headers, env);
     applySecurityHeaders(mutableResponse.headers, env);
     return mutableResponse;
   },

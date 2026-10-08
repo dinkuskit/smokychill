@@ -25,6 +25,8 @@ pnpm test
 bin/verify-site http://localhost:4321
 ```
 
+Production stand-up (noindex, checkout off): see [`DEPLOY.md`](DEPLOY.md).
+
 ## How the site is put together
 
 - **Content:** the seed creates the `primary` menu and draft product/policy records only if missing. EmDash edits are never overwritten.

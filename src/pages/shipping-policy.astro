@@ -3,6 +3,7 @@ import { getEmDashEntry } from "emdash";
 import { PortableText } from "emdash/ui";
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
+import LaunchRobotsMeta from "../components/LaunchRobotsMeta.astro";
 import "../features/store-shell/global.css";
 
 const { entry } = await getEmDashEntry("pages", "shipping-policy");
@@ -30,6 +31,7 @@ const fallback = [
     <meta charset="UTF-8" /><meta name="viewport" content="width=device-width" />
     <title>Shipping Policy | Smoky Chill</title>
     <meta name="description" content="Smoky Chill shipping policy." />
+    <LaunchRobotsMeta />
   </head>
   <body>
     <SiteHeader />

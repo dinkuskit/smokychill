@@ -2,6 +2,7 @@
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import ChillWordmark from "../components/ChillWordmark.astro";
+import LaunchRobotsMeta from "../components/LaunchRobotsMeta.astro";
 import "../features/store-shell/global.css";
 const title = "Herbal Ice Cooling Balm | Smoky Chill";
 const description = "A cooling topical balm with menthol, camphor, and CBD isolate in a 4 oz jar.";
@@ -13,6 +14,7 @@ const description = "A cooling topical balm with menthol, camphor, and CBD isola
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
+    <LaunchRobotsMeta />
     <link rel="canonical" href={`${Astro.site ?? Astro.url.origin}/`} />
     <title>{title}</title>
   </head>

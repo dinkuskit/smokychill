@@ -1,5 +1,8 @@
 ---
-import { GuestCart, GuestCartNav } from "../features/guest-cart/ui.ts";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import LaunchRobotsMeta from "../components/LaunchRobotsMeta.astro";
+import { GuestCart } from "../features/guest-cart/ui.ts";
 import { STORE_TITLE, readStorefrontProfile } from "../features/store-shell/index.js";
 import "../features/store-shell/global.css";
 
@@ -10,18 +13,14 @@ const profile = readStorefrontProfile();
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
+    <LaunchRobotsMeta />
     <title>Cart | {STORE_TITLE}</title>
   </head>
   <body data-storefront-profile={profile}>
-    <div class="store-demo-banner" data-store-demo-banner role="status">Demo / Test Store &mdash; Synthetic demonstration. Purchases and checkout are unavailable.</div>
-    <header class="store-header">
-      <a class="store-header__mark" href="/">DinkusKit / Store</a>
-      <nav class="store-header__nav" aria-label="Store">
-        <GuestCartNav />
-      </nav>
-    </header>
+    <SiteHeader />
     <main>
       <GuestCart />
     </main>
+    <SiteFooter />
   </body>
 </html>
