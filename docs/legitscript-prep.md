@@ -13,7 +13,7 @@ claims certification, or replaces labeling counsel.
 
 ## Approved storefront language
 
-- Cooling topical balm with menthol (10%) and camphor (5%).
+- The 1,000 mg reference formula uses menthol (10%) and camphor (5%).
 - 4 oz jar available in 1,000 mg, 5,000 mg, and 10,000 mg CBD strengths.
 - The 1,000 mg reference formula is documented; higher-strength formulas are
   pending formulation testing and do not use the 1,000 mg percentages.
