@@ -186,7 +186,47 @@
         "status": "published",
         "data": {
           "title": "Smoky Chill",
-          "content": []
+          "content": [
+            {
+              "_type": "dinkus.page-hero",
+              "_key": "store-hero",
+              "eyebrow": "A cool-down ritual for skin",
+              "headline": "Meet Herbal Ice",
+              "deck": "A cooling topical balm with menthol, camphor, and CBD isolate. Checkout is not available yet.",
+              "primaryLabel": "Explore Herbal Ice",
+              "primaryHref": "/products/herbal-ice",
+              "secondaryLabel": "Our story",
+              "secondaryHref": "/about"
+            }
+          ],
+          "layout": [
+            {
+              "_type": "home_opener",
+              "_version": 1,
+              "_key": "store-home-opener",
+              "eyebrow": "A cool-down ritual for skin",
+              "headline": "Meet Herbal Ice",
+              "deck": "A cooling topical balm with menthol, camphor, and CBD isolate. Checkout is not available yet.",
+              "primary_label": "Explore Herbal Ice",
+              "primary_href": "/products/herbal-ice",
+              "secondary_label": "Our story",
+              "secondary_href": "/about",
+              "facts": [
+                {
+                  "label": "Size",
+                  "value": "4 oz jar"
+                },
+                {
+                  "label": "Formula",
+                  "value": "Menthol + camphor"
+                },
+                {
+                  "label": "Checkout",
+                  "value": "Unavailable until Payments binding"
+                }
+              ]
+            }
+          ]
         }
       },
       {
