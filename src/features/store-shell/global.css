@@ -166,9 +166,10 @@ body {
 .site-notice { padding:.55rem 1rem; background:var(--ice-ink); color:#fff; text-align:center; font-size:.78rem; letter-spacing:.04em; }
 .site-header,.site-footer { width:min(74rem,calc(100% - 2rem)); margin:auto; display:flex; align-items:center; justify-content:space-between; gap:1rem; }
 .site-header { padding:1.5rem 0; }
-.site-brand { color:var(--ice-ink); display:flex; align-items:baseline; gap:.55rem; font-size:1rem; font-weight:800; letter-spacing:-.04em; text-decoration:none; }
-.site-brand__chill,.chill-wordmark { color:#2f9bb7; font-family:Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif; letter-spacing:.12em; text-shadow:1px 2px 0 #fff, 2px 3px 0 #8fd1e0; }
-.chill-wordmark { display:inline-block; font-size:clamp(2rem,5vw,4rem); transform:rotate(-2deg); }
+.site-brand { color:var(--ice-ink); display:flex; align-items:center; gap:.55rem; font-size:1rem; font-weight:800; letter-spacing:-.04em; text-decoration:none; }
+.chill-mark { display:block; overflow:visible; }
+.chill-mark--header { width:5.3rem; height:auto; }
+.chill-mark--hero { width:min(19rem,80vw); height:auto; margin-bottom:.3rem; transform:rotate(-2deg); }
 .site-nav { display:flex; flex-wrap:wrap; gap:1.1rem; align-items:center; font-size:.9rem; }
 .site-nav a { color:var(--ice-ink); text-underline-offset:.25em; }
 .home { width:min(74rem,calc(100% - 2rem)); margin:auto; }

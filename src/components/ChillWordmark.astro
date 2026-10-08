@@ -1,0 +1,19 @@
+---
+interface Props {
+  size?: "header" | "hero";
+}
+const { size = "hero" } = Astro.props;
+---
+<svg class={`chill-mark chill-mark--${size}`} viewBox="0 0 500 125" role="img" aria-labelledby={`chill-title-${size}`}>
+  <title id={`chill-title-${size}`}>CHILL</title>
+  <defs>
+    <linearGradient id={`chill-ice-${size}`} x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" />
+      <stop offset=".45" stop-color="#dff8ff" />
+      <stop offset="1" stop-color="#8fd2e2" />
+    </linearGradient>
+  </defs>
+  <text x="10" y="88" fill={`url(#chill-ice-${size})`} stroke="#4aafc8" stroke-width="3" paint-order="stroke" font-family="Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif" font-size="86" font-weight="900" letter-spacing="4">CHILL</text>
+  <path d="M67 88c0 13-4 21-11 21-6 0-8-5-8-12v-9zm83 0c0 17-4 27-12 27-7 0-9-7-9-17V88zm173 0c0 14-4 23-11 23-7 0-9-6-9-14V88zm78 0c0 11-3 18-9 18-6 0-8-5-8-12V88z" fill="#9ad9e7" opacity=".9" />
+  <path d="M29 35l18-7m63 1 17-6m128 6 19-7m70 10 14-5" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".8" />
+</svg>

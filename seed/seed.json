@@ -574,7 +574,7 @@
         "data": {
           "title": "Herbal Ice Cooling Balm",
           "item_id": "herbal-ice-4oz",
-          "description": "Herbal Ice is a non-ingestible cooling topical balm formulated with menthol and camphor and made with CBD isolate. The 4 oz jar is offered in 1,000 mg, 5,000 mg, and 10,000 mg strengths.",
+          "description": "A cooling topical balm with menthol and camphor, made with CBD isolate in three strengths. Fans nicknamed it \u201cthe ice balm.\u201d",
           "ingredients": "Coco-Caprylate/Caprate; Babassu Oil; White Beeswax; Cetyl Alcohol; Menthol Crystals; Cera Bellina (Polyglyceryl-3 Beeswax); Camphor Crystals; Japanese Peppermint Essential Oil; Eucalyptus Globulus Essential Oil; CBD Isolate; Vitamin E (T95 / Tocopherol); Alpha Bisabolol.",
           "price": "[OPEN: retail price]",
           "upc": "[OPEN: UPC / SKU]",
@@ -623,7 +623,7 @@
         "data": {
           "title": "Herbal Ice Cooling Balm",
           "category": "Herbal Ice",
-          "description": "A cooling topical balm with menthol and camphor, made with CBD isolate (approximately 1,000 mg per 4 oz jar). Fans nicknamed it \u201cthe ice balm.\u201d",
+          "description": "A cooling topical balm with menthol and camphor, made with CBD isolate in three strengths. Fans nicknamed it \u201cthe ice balm.\u201d",
           "visual_label": "BALM"
         }
       }

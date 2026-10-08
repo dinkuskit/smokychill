@@ -12,7 +12,7 @@ const { profile, demonstrations, collections } = await loadStorefrontRouteContex
 const herbalIceFallback = {
   id: "herbal-ice",
   title: "Herbal Ice Cooling Balm",
-  description: "A cooling topical balm with menthol and camphor, made with CBD isolate (approximately 1,000 mg per 4 oz jar). Fans nicknamed it “the ice balm.”",
+  description: "A cooling topical balm with menthol and camphor, made with CBD isolate in three strengths. Fans nicknamed it “the ice balm.”",
   illustration: "balm",
   availabilitySource: "preview",
 };
@@ -101,6 +101,7 @@ const status = managed ? `${managed.inventory.available} available` : unmanaged 
             <select id="strength" data-strength-selector>
               {strengths.map((strength, index) => <option value={strength.itemId} selected={index === 0}>{strength.mg}</option>)}
             </select>
+            <p class="strength-meta" data-strength-mg>Selected strength: {defaultStrength?.mg ?? "Pending"}</p>
             <p class="strength-meta" data-strength-sku>SKU: {defaultStrength?.sku ?? "Pending"}</p>
             <p class="strength-meta" data-strength-status>{defaultStrength?.formulaStatus ?? "Formula details pending."} {defaultStrength?.coaStatus ?? "COA coming soon"}</p>
             {managed && <p class="product-detail__price" data-product-price><strong data-regular-price>{managed.price.regularText}</strong></p>}
@@ -122,10 +123,12 @@ const status = managed ? `${managed.inventory.available} available` : unmanaged 
 <script define:vars={{ strengths }}>
   const selector = document.querySelector("[data-strength-selector]");
   const sku = document.querySelector("[data-strength-sku]");
+  const mg = document.querySelector("[data-strength-mg]");
   const status = document.querySelector("[data-strength-status]");
   selector?.addEventListener("change", () => {
     const selected = strengths.find((strength) => strength.itemId === selector.value);
-    if (selected && sku && status) {
+    if (selected && sku && mg && status) {
+      mg.textContent = `Selected strength: ${selected.mg}`;
       sku.textContent = `SKU: ${selected.sku}`;
       status.textContent = `${selected.formulaStatus} ${selected.coaStatus}`;
     }
