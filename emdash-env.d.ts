@@ -46,17 +46,7 @@ export interface PageLayoutRichTextV1Block {
 
 export type PageLayoutRichTextBlock = PageLayoutRichTextV1Block;
 
-export interface PageLayoutQueryCardV1Block {
-  _type: "query_card";
-  _version: 1;
-  _key: string;
-  "source": string;
-  "limit": number;
-}
-
-export type PageLayoutQueryCardBlock = PageLayoutQueryCardV1Block;
-
-export type PageLayoutBlock = PageLayoutHomeOpenerBlock | PageLayoutRichTextBlock | PageLayoutQueryCardBlock;
+export type PageLayoutBlock = PageLayoutHomeOpenerBlock | PageLayoutRichTextBlock;
 
 export interface Page {
   id: string;
@@ -73,9 +63,29 @@ export interface Page {
   terms?: Record<string, TaxonomyTerm[]>;
 }
 
+export interface Product {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  item_id: string;
+  description?: string;
+  ingredients?: string;
+  price?: string;
+  upc?: string;
+  featured_image?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown>; darkVariant?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> } };
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  byline?: BylineSummary | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
+
 declare module "emdash" {
   interface EmDashCollections {
     merchandise: Merchandise;
     pages: Page;
+    products: Product;
   }
 }
