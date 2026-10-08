@@ -1,0 +1,30 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@dinkuskit/commerce": [
+        "./.artifacts/source-deps/commerce/src/index.ts"
+      ],
+      "@dinkuskit/commerce/features/checkout": [
+        "./.artifacts/source-deps/commerce/src/features/checkout/index.ts"
+      ],
+      "@dinkuskit/inventory": [
+        "./node_modules/@dinkuskit/inventory/src/index.ts"
+      ],
+      "@store/*": [
+        "./src/*"
+      ]
+    }
+  },
+  "include": [
+    ".astro/types.d.ts",
+    "**/*"
+  ],
+  "exclude": [
+    "dist",
+    "node_modules",
+    "test-results",
+    "runs"
+  ]
+}
