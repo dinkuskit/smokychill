@@ -14,7 +14,9 @@ claims certification, or replaces labeling counsel.
 ## Approved storefront language
 
 - Cooling topical balm with menthol (10%) and camphor (5%).
-- Made with CBD isolate, approximately 1,000 mg per 4 oz jar.
+- 4 oz jar available in 1,000 mg, 5,000 mg, and 10,000 mg CBD strengths.
+- The 1,000 mg reference formula is documented; higher-strength formulas are
+  pending formulation testing and do not use the 1,000 mg percentages.
 - Topical use only; not for ingestion.
 - Apply to skin as desired; wash hands after application; avoid eyes and
   mucous membranes; keep out of reach of children.
@@ -27,6 +29,7 @@ claims certification, or replaces labeling counsel.
 - Product and application photography.
 - Batch COA and confirmation of the label's CBD/THC statements. Until a COA
   exists, do not say “THC-free” or “0 THC”.
+- Verify the sender name `SMCLLC` in the borrowed shipping policy before launch.
 - OTC drug-facts and menthol/camphor labeling counsel.
 - Shipping and returns policy.
 

@@ -11,6 +11,14 @@ import { resolveGuestCheckoutAdmission } from "./features/guest-cart/checkout-ad
 const NATIVE_GUEST_CHECKOUT_POST_PATH =
   /^\/_emdash\/api\/plugins\/dinkus-commerce\/checkout\/guest\/(prepare|start|status)$/;
 
+function applyLaunchIndexing(response: Response, runtime?: { env?: Record<string, unknown> }): Response {
+  const launchIndexable = runtime?.env?.DINKUS_LAUNCH_INDEXABLE === "1" || process.env.DINKUS_LAUNCH_INDEXABLE === "1";
+  if (!launchIndexable && response.headers.get("content-type")?.includes("text/html")) {
+    response.headers.set("X-Robots-Tag", "noindex, nofollow");
+  }
+  return response;
+}
+
 export const onRequest = defineMiddleware(async (context, next) => {
   let pathForms: string[];
   try {
@@ -81,6 +89,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
     }
 
     const response = await next();
+    applyLaunchIndexing(response, (context.locals as { runtime?: { env?: Record<string, unknown> } }).runtime);
     applySecurityHeaders(response.headers);
     return response;
   }
@@ -113,5 +122,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return response;
   }
 
-  return next();
+  const response = await next();
+  applyLaunchIndexing(response, (context.locals as { runtime?: { env?: Record<string, unknown> } }).runtime);
+  return response;
 });

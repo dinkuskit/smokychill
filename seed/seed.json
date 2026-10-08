@@ -88,6 +88,62 @@
           "slug": "featured_image",
           "label": "Product image",
           "type": "image"
+        },
+        {
+          "slug": "brand",
+          "label": "Brand line",
+          "type": "string"
+        },
+        {
+          "slug": "manufacturer",
+          "label": "Manufacturer",
+          "type": "string"
+        },
+        {
+          "slug": "manufacturer_address",
+          "label": "Manufacturer address",
+          "type": "string"
+        },
+        {
+          "slug": "gtin",
+          "label": "GTIN / UPC (optional)",
+          "type": "string"
+        },
+        {
+          "slug": "strengths",
+          "label": "CBD strengths and SKUs",
+          "type": "repeater",
+          "validation": {
+            "subFields": [
+              {
+                "slug": "mg",
+                "label": "CBD milligrams",
+                "type": "integer",
+                "required": true
+              },
+              {
+                "slug": "sku",
+                "label": "SKU",
+                "type": "string",
+                "required": true
+              },
+              {
+                "slug": "formula_status",
+                "label": "Formula status",
+                "type": "string"
+              },
+              {
+                "slug": "coa_status",
+                "label": "COA status",
+                "type": "string"
+              },
+              {
+                "slug": "price",
+                "label": "Price (leave blank until confirmed)",
+                "type": "string"
+              }
+            ]
+          }
         }
       ]
     },
@@ -348,18 +404,178 @@
             }
           ]
         }
+      },
+      {
+        "id": "shipping-policy",
+        "slug": "shipping-policy",
+        "status": "published",
+        "data": {
+          "title": "Shipping Policy",
+          "content": [
+            {
+              "_type": "block",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Shipping Policy"
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Last updated: October 2026"
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Shipping coverage: We currently ship within the United States only."
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Processing time: Orders are typically processed and shipped within 1\u20133 business days (Monday\u2013Friday, excluding holidays). We do our best to ship same-day when possible."
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Shipping methods: Shipping options are shown at checkout and may include: Free Ground Shipping (when your order qualifies); USPS Ground Advantage (Ground); USPS Priority Mail (Priority)."
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Packaging and discretion: All orders are shipped discreetly under the name SMCLLC. Packages are sent in a standard, unbranded cardboard box with no indication of the contents or company branding on the outside."
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Delivery time estimates: Delivery time begins after your order ships: USPS Ground Advantage: expected 2\u20135 business days. USPS Priority Mail: expected 2\u20133 days (not guaranteed). Carrier delays can occur due to volume, weather, and other factors outside our control."
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Tracking: Tracking is provided once your order ships. Tracking may take 24\u201348 hours to update after the carrier\u2019s first scan."
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Address accuracy: Please double-check your shipping address at checkout. If an address is incomplete or incorrect, delivery may be delayed, returned, or marked delivered to the wrong location."
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Delivery issues, missing packages, and claims: We\u2019re responsible for processing your order accurately and handing it off to USPS. Once USPS accepts the package and tracking begins, delivery timing and handling are controlled by the carrier. If there\u2019s a delivery issue, contact us. We\u2019ll help you follow the right USPS process. Reshipments or refunds are not automatic and are handled case-by-case based on tracking, address verification, and the USPS outcome."
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "If the package appears delayed or tracking isn\u2019t moving: Start with USPS help resources and allow normal transit time. If it continues without delivery, we can assist you with the next appropriate USPS step, including a Missing Mail search when applicable."
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "If tracking shows \u201cDelivered\u201d but you don\u2019t have it: Before it can be treated as lost, you must: check around the delivery location (porch, side door, mailbox, parcel locker); check with household members or building staff; contact your local post office to request investigation of the delivery scan. We\u2019ll provide the details we have (tracking, ship date) and assist with the process."
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "When a USPS claim becomes applicable: USPS has specific claim windows and documentation requirements for insured services. If a claim is applicable, we\u2019ll assist with the information we can provide and guide you on what USPS requires."
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Damaged packages: If your package arrives damaged, contact us promptly with photos of: the shipping box; the shipping label; the damaged product(s)."
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Contact: If you need help with a delivery issue, Contact Us."
+                }
+              ]
+            }
+          ]
+        }
       }
     ],
     "products": [
       {
         "id": "herbal-ice-draft",
         "slug": "herbal-ice",
-        "status": "draft",
+        "status": "published",
         "data": {
           "title": "Herbal Ice Cooling Balm",
           "item_id": "herbal-ice-4oz",
-          "description": "A cooling topical balm with menthol and camphor, made with CBD isolate (approximately 1,000 mg per 4 oz jar). Fans nicknamed it \u201cthe ice balm.\u201d",
-          "ingredients": "Coco-Caprylate/Caprate; Babassu Oil; White Beeswax; Cetyl Alcohol; Menthol Crystals; Cera Bellina; Camphor Crystals; Japanese Peppermint Essential Oil; Eucalyptus Globulus Essential Oil; CBD Isolate; Vitamin E; Alpha Bisabolol.",
+          "description": "Herbal Ice is a non-ingestible cooling topical balm formulated with menthol and camphor and made with CBD isolate. The 4 oz jar is offered in 1,000 mg, 5,000 mg, and 10,000 mg strengths.",
+          "ingredients": "Coco-Caprylate/Caprate; Babassu Oil; White Beeswax; Cetyl Alcohol; Menthol Crystals; Cera Bellina (Polyglyceryl-3 Beeswax); Camphor Crystals; Japanese Peppermint Essential Oil; Eucalyptus Globulus Essential Oil; CBD Isolate; Vitamin E (T95 / Tocopherol); Alpha Bisabolol.",
           "price": "[OPEN: retail price]",
           "upc": "[OPEN: UPC / SKU]",
           "featured_image": {
@@ -368,7 +584,34 @@
               "alt": "Herbal Ice 4 oz cooling balm jar",
               "filename": "herbal-ice-hero.webp"
             }
-          }
+          },
+          "brand": "Smoky Co",
+          "manufacturer": "Manufactured by Smoky Product Company",
+          "manufacturer_address": "55 Eagles Nest Trail, Murphy, NC 28906",
+          "gtin": "",
+          "strengths": [
+            {
+              "mg": 1000,
+              "sku": "SPC-HI4-1000",
+              "formula_status": "Reference formula documented; approximately 1% CBD isolate.",
+              "coa_status": "COA coming soon",
+              "price": ""
+            },
+            {
+              "mg": 5000,
+              "sku": "SPC-HI4-5000",
+              "formula_status": "Higher-strength formulation testing pending; percentages not finalized.",
+              "coa_status": "COA coming soon",
+              "price": ""
+            },
+            {
+              "mg": 10000,
+              "sku": "SPC-HI4-10000",
+              "formula_status": "Higher-strength formulation testing pending; percentages not finalized.",
+              "coa_status": "COA coming soon",
+              "price": ""
+            }
+          ]
         }
       }
     ],
@@ -539,6 +782,27 @@
           "type": "custom",
           "label": "Contact",
           "url": "/contact"
+        }
+      ]
+    },
+    {
+      "name": "footer",
+      "label": "Footer Navigation",
+      "items": [
+        {
+          "type": "custom",
+          "label": "Shipping Policy",
+          "url": "/shipping-policy"
+        },
+        {
+          "type": "custom",
+          "label": "Privacy",
+          "url": "/privacy"
+        },
+        {
+          "type": "custom",
+          "label": "Terms",
+          "url": "/terms"
         }
       ]
     }

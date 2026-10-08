@@ -166,8 +166,9 @@ body {
 .site-notice { padding:.55rem 1rem; background:var(--ice-ink); color:#fff; text-align:center; font-size:.78rem; letter-spacing:.04em; }
 .site-header,.site-footer { width:min(74rem,calc(100% - 2rem)); margin:auto; display:flex; align-items:center; justify-content:space-between; gap:1rem; }
 .site-header { padding:1.5rem 0; }
-.site-brand { color:var(--ice-ink); font-size:1.35rem; font-weight:800; letter-spacing:-.06em; text-decoration:none; }
-.site-brand__ice { color:#42aac5; margin-left:.1rem; }
+.site-brand { color:var(--ice-ink); display:flex; align-items:baseline; gap:.55rem; font-size:1rem; font-weight:800; letter-spacing:-.04em; text-decoration:none; }
+.site-brand__chill,.chill-wordmark { color:#2f9bb7; font-family:Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif; letter-spacing:.12em; text-shadow:1px 2px 0 #fff, 2px 3px 0 #8fd1e0; }
+.chill-wordmark { display:inline-block; font-size:clamp(2rem,5vw,4rem); transform:rotate(-2deg); }
 .site-nav { display:flex; flex-wrap:wrap; gap:1.1rem; align-items:center; font-size:.9rem; }
 .site-nav a { color:var(--ice-ink); text-underline-offset:.25em; }
 .home { width:min(74rem,calc(100% - 2rem)); margin:auto; }
@@ -189,6 +190,7 @@ body {
 .home-intro p:not(.eyebrow),.simple-page > p:not(.eyebrow) { color:var(--ice-muted); font-size:1.15rem; line-height:1.7; }
 .text-link { color:var(--ice-action); font-weight:800; text-underline-offset:.25em; }
 .site-footer { padding:2rem 0 3rem; color:var(--ice-muted); font-size:.85rem; }
+.site-footer > div { display:flex; flex-direction:column; gap:.3rem; }.site-footer strong { color:var(--ice-ink); }.site-footer nav { display:flex; flex-wrap:wrap; gap:1rem; }
 .site-footer a { color:inherit; }
 .product-detail__visual { background:linear-gradient(145deg,#d9f4fa,#fff 55%,#b9dfeb) !important; box-shadow:var(--ice-shadow); }
 .product-detail__visual img { mix-blend-mode:multiply; }

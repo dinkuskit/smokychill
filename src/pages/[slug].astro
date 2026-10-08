@@ -1,5 +1,6 @@
 ---
 import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
 import "../features/store-shell/global.css";
 const pages: Record<string, { title: string; body: string }> = {
   about: { title: "Our story", body: "Smoky Chill is building a focused home for Herbal Ice. This story is a CMS draft awaiting brand-line approval." },
@@ -14,5 +15,5 @@ if (!page) Astro.response.status = 404;
 <!doctype html>
 <html lang="en">
   <head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width" /><title>{page ? `${page.title} | Smoky Chill` : "Not found | Smoky Chill"}</title></head>
-  <body><SiteHeader /><main class="simple-page"><p class="eyebrow">CMS draft</p><h1>{page?.title ?? "Page not found"}</h1><p>{page?.body ?? "This page does not exist."}</p><a class="text-link" href="/">Back home →</a></main><footer class="site-footer"><a href="/privacy">Privacy</a> · <a href="/terms">Terms</a></footer></body>
+  <body><SiteHeader /><main class="simple-page"><p class="eyebrow">CMS draft</p><h1>{page?.title ?? "Page not found"}</h1><p>{page?.body ?? "This page does not exist."}</p><a class="text-link" href="/">Back home →</a></main><SiteFooter /></body>
 </html>

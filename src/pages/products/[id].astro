@@ -1,8 +1,11 @@
 ---
 import { getEmDashCollection } from "emdash";
 import SiteHeader from "../../components/SiteHeader.astro";
+import SiteFooter from "../../components/SiteFooter.astro";
 import { STORE_TITLE, collectionPath, loadStorefrontRouteContext, productPath } from "../../features/store-shell/index.js";
+import { readPublicVariantProduct } from "../../features/commerce-catalog/variant-public.js";
 import "../../features/store-shell/global.css";
+import seed from "../../../seed/seed.json";
 
 const merchandise = await getEmDashCollection<"merchandise", Record<string, unknown>>("merchandise", { status: "published" });
 const { profile, demonstrations, collections } = await loadStorefrontRouteContext(merchandise.entries);
@@ -18,6 +21,33 @@ const cmsItem = cmsCollection?.items.find((candidate) => productPath(candidate.i
 const item = cmsItem ?? (Astro.url.pathname === "/products/herbal-ice" ? herbalIceFallback : undefined);
 const collection = cmsCollection ?? (item ? { name: "Herbal Ice", items: [item] } : undefined);
 const collectionHref = cmsCollection ? collectionPath(cmsCollection.name) : "/";
+const products = await getEmDashCollection<"products", Record<string, unknown>>("products", { status: "published" });
+const cmsProduct = products.entries.find((entry) => entry.slug === "herbal-ice");
+const bootstrapProduct = (seed.content.products as { slug: string; data: Record<string, unknown> }[]).find((product) => product.slug === "herbal-ice");
+const productData = (cmsProduct?.data ?? bootstrapProduct?.data ?? {}) as Record<string, unknown>;
+const cmsStrengths = Array.isArray(productData.strengths) ? productData.strengths.filter((value): value is Record<string, unknown> =>
+  value !== null && typeof value === "object" && !Array.isArray(value) && typeof value.mg === "number" && typeof value.sku === "string",
+) : [];
+const commerceVariants = await readPublicVariantProduct(
+  { runtime: Astro.locals.emdash, request: Astro.request },
+  "Herbal Ice Cooling Balm",
+).catch(() => null);
+const strengths = commerceVariants?.members.length
+  ? commerceVariants.members.map((member) => ({
+      mg: member.selections.find((selection) => selection.optionLabel === "Strength")?.valueLabel ?? "Strength",
+      sku: cmsStrengths.find((strength) => strength.sku === member.catalogItemId)?.sku ?? member.catalogItemId,
+      itemId: member.catalogItemId,
+      formulaStatus: cmsStrengths.find((strength) => strength.sku === member.catalogItemId)?.formula_status ?? "Formula details pending.",
+      coaStatus: "COA coming soon",
+    }))
+  : cmsStrengths.map((strength) => ({
+      mg: `${strength.mg} mg`,
+      sku: strength.sku as string,
+      itemId: strength.sku as string,
+      formulaStatus: typeof strength.formula_status === "string" ? strength.formula_status : "Formula details pending.",
+      coaStatus: "COA coming soon",
+    }));
+const defaultStrength = strengths[0];
 if (!item) Astro.response.status = 404;
 const managed = item?.availabilitySource === "managed" ? demonstrations?.managed ?? null : null;
 const unmanaged = item?.availabilitySource === "unmanaged" ? demonstrations?.unmanaged ?? null : null;
@@ -38,18 +68,22 @@ const status = managed ? `${managed.inventory.available} available` : unmanaged 
       "@context": "https://schema.org",
       "@type": "Product",
       name: "Herbal Ice Cooling Balm",
-      sku: "UPC_PENDING",
       productID: "herbal-ice-4oz",
       description: item.description,
       image: [`${Astro.url.origin}/images/herbal-ice-hero.webp`],
-      brand: { "@type": "Brand", name: "Smoky Chill" },
-      offers: {
-        "@type": "Offer",
-        url: `${Astro.url.origin}/products/herbal-ice`,
-        priceCurrency: "USD",
-        availability: "https://schema.org/PreOrder",
-        seller: { "@type": "Organization", name: "Smoky Chill" },
+      brand: { "@type": "Brand", name: "Smoky Co" },
+      manufacturer: {
+        "@type": "Organization",
+        name: "Smoky Product Company",
+        address: { "@type": "PostalAddress", streetAddress: "55 Eagles Nest Trail", addressLocality: "Murphy", addressRegion: "NC", postalCode: "28906", addressCountry: "US" },
       },
+      hasVariant: strengths.map((strength) => ({
+        "@type": "Product",
+        name: `Herbal Ice Cooling Balm — ${strength.mg}`,
+        sku: strength.sku,
+        brand: { "@type": "Brand", name: "Smoky Co" },
+        manufacturer: { "@type": "Organization", name: "Smoky Product Company" },
+      })),
     })} />}
   </head>
   <body data-storefront-profile={profile}>
@@ -63,12 +97,18 @@ const status = managed ? `${managed.inventory.available} available` : unmanaged 
             <p class="product-detail__eyebrow">{collection.name}</p>
             <h1>{item.title}</h1>
             <p class="product-detail__description">{item.description}</p>
+            <label class="strength-picker" for="strength">CBD strength</label>
+            <select id="strength" data-strength-selector>
+              {strengths.map((strength, index) => <option value={strength.itemId} selected={index === 0}>{strength.mg}</option>)}
+            </select>
+            <p class="strength-meta" data-strength-sku>SKU: {defaultStrength?.sku ?? "Pending"}</p>
+            <p class="strength-meta" data-strength-status>{defaultStrength?.formulaStatus ?? "Formula details pending."} {defaultStrength?.coaStatus ?? "COA coming soon"}</p>
             {managed && <p class="product-detail__price" data-product-price><strong data-regular-price>{managed.price.regularText}</strong></p>}
             {unmanaged && <p class="product-detail__price" data-product-price>{unmanaged.price.saleText ? <><s data-regular-price>{unmanaged.price.regularText}</s> <strong data-sale-price>{unmanaged.price.saleText}</strong></> : <strong data-regular-price>{unmanaged.price.regularText}</strong>}</p>}
             {!managed && !unmanaged && <p class="product-detail__price product-detail__price--pending">Price coming soon <small>CMS placeholder</small></p>}
             <p class="product-detail__status" data-product-status data-availability-status={unmanaged?.storefront.status}>{status}</p>
             <p class="product-detail__notice">Checkout unavailable until a server-owned Payments binding exists. Product copy remains a CMS draft.</p>
-            <div class="product-detail__facts"><h2>Details</h2><ul><li>Menthol (10%) and camphor (5%)</li><li>CBD isolate, approximately 1,000 mg per 4 oz jar</li><li>Topical use only; not for ingestion</li><li>Batch COA: <strong>pending</strong></li><li>Made by Smoky Product Company <strong>[brand line pending]</strong></li></ul></div>
+            <div class="product-detail__facts"><h2>Details</h2><ul><li>Menthol and camphor cooling balm</li><li>4 oz jar · select a CBD strength above</li><li>Topical use only; not for ingestion</li><li>Batch COA: <strong>coming soon</strong></li><li>Manufactured by Smoky Product Company, 55 Eagles Nest Trail, Murphy, NC 28906</li></ul></div>
             <div class="product-detail__facts"><h2>Ingredients</h2><p>Coco-Caprylate/Caprate, Babassu Oil, White Beeswax, Cetyl Alcohol, Menthol Crystals, Cera Bellina (Polyglyceryl-3 Beeswax), Camphor Crystals, Japanese Peppermint Essential Oil, Eucalyptus Globulus Essential Oil, CBD Isolate, Vitamin E (T95 / Tocopherol), Alpha Bisabolol.</p></div>
             <div class="product-detail__facts"><h2>How to use</h2><p>Apply to skin as desired. Wash hands after application. Avoid eyes and mucous membranes. For external use only. Keep out of reach of children.</p></div>
             <a class="product-detail__back" href={collectionHref}>← Back home</a>
@@ -76,9 +116,21 @@ const status = managed ? `${managed.inventory.available} available` : unmanaged 
         </article>
       ) : <><h1>Product not found</h1><p>This product is not published or does not exist.</p><a href="/">Return to catalog</a></>}
     </main>
-    <footer class="store-footer">Merchandise copy is editable in EmDash; transactional facts remain in Commerce{profile === "proof" ? " and Inventory" : ""}.</footer>
+    <SiteFooter />
   </body>
 </html>
+<script define:vars={{ strengths }}>
+  const selector = document.querySelector("[data-strength-selector]");
+  const sku = document.querySelector("[data-strength-sku]");
+  const status = document.querySelector("[data-strength-status]");
+  selector?.addEventListener("change", () => {
+    const selected = strengths.find((strength) => strength.itemId === selector.value);
+    if (selected && sku && status) {
+      sku.textContent = `SKU: ${selected.sku}`;
+      status.textContent = `${selected.formulaStatus} ${selected.coaStatus}`;
+    }
+  });
+</script>
 <style>
   .product-page{width:min(70rem,calc(100% - 2rem));margin:0 auto;min-height:65vh}
   .browse-breadcrumb{display:flex;flex-wrap:wrap;gap:.7rem;padding:2rem 0;color:var(--store-muted)}
@@ -94,6 +146,7 @@ const status = managed ? `${managed.inventory.available} available` : unmanaged 
   .product-detail__price{display:flex;gap:.7rem;align-items:baseline;font-size:1.5rem}.product-detail__price s{color:var(--store-muted)}
   .product-detail__status{font-size:1.25rem;font-weight:800;margin:2rem 0 .5rem}
   .product-detail__notice{line-height:1.5;color:var(--store-muted)}
+  .strength-picker{display:block;font-weight:800;margin-top:1.5rem}.strength-picker+select{width:100%;max-width:20rem;padding:.8rem;border:2px solid var(--ice-line);border-radius:.5rem;background:#fff;color:var(--ice-ink);font:inherit}.strength-meta{color:var(--ice-muted);font-size:.85rem}
   .product-detail__back{display:inline-block;margin-top:2rem;color:inherit;font-weight:800;text-underline-offset:.25em}
   @media(max-width:40rem){.product-detail{grid-template-columns:1fr;gap:1.5rem}}
 </style>
