@@ -20,7 +20,7 @@ import {
 } from "../../scripts/demo-seed-policy.js";
 
 const shared = {
-  name: "dinkuskit-template-demo",
+  name: "smokychill",
   compatibility_date: "2026-09-30",
   assets: { binding: "ASSETS", directory: "./dist/client", run_worker_first: true },
   ratelimits: [{ name: "RATE_LIMITER", namespace_id: "2026100101" }],
@@ -30,7 +30,7 @@ describe("demo seed resource identity", () => {
   it("accepts a names-only production config", () => {
     const config = parseWranglerConfig({
       ...shared,
-      d1_databases: [{ binding: "DB", database_name: "dinkuskit-template-demo" }],
+      d1_databases: [{ binding: "DB", database_name: "smokychill" }],
     });
     expect(() => assertProductionConfig(config)).not.toThrow();
   });
@@ -41,8 +41,8 @@ describe("demo seed resource identity", () => {
       d1_databases: [
         {
           binding: "DB",
-          database_name: "dinkuskit-template-demo",
-          database_id: "dinkuskit-template-demo-local",
+          database_name: "smokychill",
+          database_id: "smokychill-local",
         },
       ],
     });
@@ -55,7 +55,7 @@ describe("demo seed resource identity", () => {
         parseWranglerConfig({
           ...shared,
           name: "other-worker",
-          d1_databases: [{ binding: "DB", database_name: "dinkuskit-template-demo" }],
+          d1_databases: [{ binding: "DB", database_name: "smokychill" }],
         }),
       ),
     ).toThrow(/worker/i);
@@ -66,7 +66,7 @@ describe("demo seed resource identity", () => {
           d1_databases: [
             {
               binding: "OTHER",
-              database_name: "dinkuskit-template-demo",
+              database_name: "smokychill",
               database_id: "11111111-1111-4111-8111-111111111111",
             },
           ],
@@ -81,7 +81,7 @@ describe("demo seed resource identity", () => {
     const config = parseWranglerConfig({
       ...shared,
       d1_databases: [
-        { binding: "DB", database_name: "dinkuskit-template-demo", database_id: id },
+        { binding: "DB", database_name: "smokychill", database_id: id },
       ],
     });
     expect(assertLocalConfig(config, id).databaseId).toBe(id);
@@ -123,10 +123,10 @@ describe("demo seed resource identity", () => {
 
   it("rejects a non-integer rate namespace before equality", () => {
     const database = {
-      d1_databases: [{ binding: "DB", database_name: "dinkuskit-template-demo" }],
+      d1_databases: [{ binding: "DB", database_name: "smokychill" }],
     };
     for (const namespaceId of [
-      "dinkuskit-template-demo-public-20260930",
+      "smokychill-public-20260930",
       "0",
       "01",
       "-1",
@@ -204,7 +204,7 @@ describe("demo seed resource identity", () => {
     expect(committed).not.toContain("account_id");
     expect(committed).not.toContain("\"remote\"");
     expect(committed).toContain("\"namespace_id\": \"2026100101\"");
-    expect(committed).not.toContain("dinkuskit-template-demo-public-20260930");
+    expect(committed).not.toContain("smokychill-public-20260930");
     expect(committed).toContain("2026-09-30");
     expect(committed).toContain("run_worker_first");
   });
@@ -215,7 +215,7 @@ describe("demo seed resource identity", () => {
     const localId = "22222222-2222-4222-8222-222222222222";
     const fingerprint = createHash("sha256")
       .update(
-        [accountId, databaseId, "dinkuskit-template-demo", "dinkuskit-template-demo", "DB"].join("\n"),
+        [accountId, databaseId, "smokychill", "smokychill", "DB"].join("\n"),
       )
       .digest("hex");
     const config = (overrides: Record<string, unknown> = {}) =>
@@ -226,7 +226,7 @@ describe("demo seed resource identity", () => {
         d1_databases: [
           {
             binding: "DB",
-            database_name: "dinkuskit-template-demo",
+            database_name: "smokychill",
             database_id: databaseId,
             remote: true,
             ...(overrides.database as Record<string, unknown> | undefined),
@@ -235,8 +235,8 @@ describe("demo seed resource identity", () => {
       });
     const manifest = (overrides: Record<string, unknown> = {}) =>
       parseRemoteTargetManifest({
-        workerName: "dinkuskit-template-demo",
-        databaseName: "dinkuskit-template-demo",
+        workerName: "smokychill",
+        databaseName: "smokychill",
         binding: "DB",
         accountId,
         databaseId,
@@ -281,7 +281,7 @@ describe("demo seed resource identity", () => {
           d1_databases: [
             {
               binding: "DB",
-              database_name: "dinkuskit-template-demo",
+              database_name: "smokychill",
               database_id: databaseId,
               preview_database_id: databaseId,
               remote: true,
@@ -295,7 +295,7 @@ describe("demo seed resource identity", () => {
         parseWranglerConfig({
           ...shared,
           d1_databases: [
-            { binding: "DB", database_name: "dinkuskit-template-demo", remote: true },
+            { binding: "DB", database_name: "smokychill", remote: true },
             { binding: "OTHER", database_name: "other", remote: true },
           ],
         }),
@@ -371,7 +371,7 @@ describe("demo seed resource identity", () => {
           parseWranglerConfig({
             ...shared,
             account_id: accountId,
-            d1_databases: [{ binding: "DB", database_name: "dinkuskit-template-demo" }],
+            d1_databases: [{ binding: "DB", database_name: "smokychill" }],
           }),
         ),
       "PRODUCTION_ACCOUNT_ID_PRESENT",

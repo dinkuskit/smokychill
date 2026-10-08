@@ -38,9 +38,11 @@ describe("public boundary access evaluation", () => {
   it("allows static assets and public media GET endpoints", () => {
     expect(evaluatePublicBoundary("GET", "/_astro/client.js").allowed).toBe(true);
     expect(evaluatePublicBoundary("GET", "/merch/hoodie.svg").allowed).toBe(true);
+    expect(evaluatePublicBoundary("GET", "/images/herbal-ice-hero.webp").allowed).toBe(true);
     expect(evaluatePublicBoundary("GET", "/_emdash/api/media/file/hero.png").allowed).toBe(true);
     expect(evaluatePublicBoundary("GET", "/favicon.ico").allowed).toBe(true);
     expect(evaluatePublicBoundary("GET", "/robots.txt").allowed).toBe(true);
+    expect(evaluatePublicBoundary("GET", "/_emdash/api/plugins/r_gshdrqaldna3r7sn/catalog/public").allowed).toBe(true);
   });
 
   it("uses slashless cart and checkout paths at the public boundary", () => {

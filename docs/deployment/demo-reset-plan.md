@@ -48,13 +48,13 @@ Catalog writes stay on Commerce `createCatalogItem`, `setCatalogItemRegularPrice
    ```bash
    node --import ./scripts/cloudflare-workers-hook.mjs .artifacts/seed/seed-synthetic-demo.mjs --remote --confirm <fingerprint>
    ```
-   `--remote` without the ignored manifest `.artifacts/remote-operator-target.json` exits 2 with `REMOTE_SEED_UNPROVED` before any proxy. A present manifest still has to match ignored `.artifacts/wrangler.remote.jsonc`: worker `dinkuskit-template-demo`, database name `dinkuskit-template-demo`, exactly one D1 binding `DB` with `remote: true`, materialized `account_id` and `database_id`, `run_worker_first`, and rate namespace `2026100101`. The manifest scope must be `fresh-demo-only`. `--confirm` must equal the manifest confirmation and the SHA-256 hex of these lines, lowercased ids, with no trailing newline on the last line:
+   `--remote` without the ignored manifest `.artifacts/remote-operator-target.json` exits 2 with `REMOTE_SEED_UNPROVED` before any proxy. A present manifest still has to match ignored `.artifacts/wrangler.remote.jsonc`: worker `smokychill`, database name `smokychill`, exactly one D1 binding `DB` with `remote: true`, materialized `account_id` and `database_id`, `run_worker_first`, and rate namespace `2026100101`. The manifest scope must be `fresh-demo-only`. `--confirm` must equal the manifest confirmation and the SHA-256 hex of these lines, lowercased ids, with no trailing newline on the last line:
 
    ```text
    <account id>
    <database id>
-   dinkuskit-template-demo
-   dinkuskit-template-demo
+   smokychill
+   smokychill
    DB
    ```
 

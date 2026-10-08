@@ -19,9 +19,10 @@ projection is available. The bootstrap writes prices through Commerce's
 server-side price path; the browser never supplies or calculates them. CMS
 seed data supplies editable labels, SKUs, and formula/COA status.
 
-Known Commerce gap: the grouped member projection does not carry each
-member's editable SKU. The storefront joins the projected member selection to
-the CMS-editable SKU label for display and JSON-LD; member identity, price,
-availability, and strength values remain Commerce-authoritative. This site
-does not patch Commerce. Checkout remains disabled until a server-owned
-Payments binding exists.
+Native `createPlugin` at pin `eafd3e83120c70120ccbe0a8684770b2739a4edf` does
+not register HTTP `catalog/public`; that public GET route lives only on the
+sandboxed `plugin.ts` entry. Local native-development therefore reads the same
+variant/price/availability resolvers through EmDash plugin storage. Shipping
+uses the installed Registry runtime id `r_gshdrqaldna3r7sn`. Member SKUs come
+from Commerce catalog items when available. This site does not patch Commerce.
+Checkout remains disabled until a server-owned Payments binding exists.

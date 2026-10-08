@@ -34,17 +34,22 @@ const commerceVariants = await readPublicVariantProduct(
   "Herbal Ice Cooling Balm",
 ).catch(() => null);
 const strengths = commerceVariants?.members.length
-  ? commerceVariants.members.map((member) => ({
-      mg: member.selections.find((selection) => selection.optionLabel === "Strength")?.valueLabel ?? "Strength",
-      sku: cmsStrengths.find((strength) => `${strength.mg} mg` === member.selections.find((selection) => selection.optionLabel === "Strength")?.valueLabel)?.sku ?? "Pending",
-      itemId: member.catalogItemId,
-      priceMinor: member.price.minor,
-      priceText: formatUsdMinor(member.price.minor),
-      formulaStatus: cmsStrengths.find((strength) => `${strength.mg} mg` === member.selections.find((selection) => selection.optionLabel === "Strength")?.valueLabel)?.formula_status ?? "Formula details pending.",
-      coaStatus: "COA coming soon",
-    }))
+  ? commerceVariants.members.map((member) => {
+      const strengthLabel = member.selections.find((selection) => selection.optionLabel === "Strength")?.valueLabel ?? "Strength";
+      const mgNumber = Number(strengthLabel.replace(/[^\d]/g, ""));
+      const cmsStrength = cmsStrengths.find((strength) => strength.mg === mgNumber);
+      return {
+        mg: strengthLabel,
+        sku: member.sku || (typeof cmsStrength?.sku === "string" ? cmsStrength.sku : "Pending"),
+        itemId: member.catalogItemId,
+        priceMinor: member.price.minor,
+        priceText: formatUsdMinor(member.price.minor),
+        formulaStatus: typeof cmsStrength?.formula_status === "string" ? cmsStrength.formula_status : "Formula details pending.",
+        coaStatus: "COA coming soon",
+      };
+    })
   : cmsStrengths.map((strength) => ({
-      mg: `${strength.mg} mg`,
+      mg: `${Number(strength.mg).toLocaleString("en-US")} mg`,
       sku: strength.sku as string,
       itemId: strength.sku as string,
       priceMinor: null,

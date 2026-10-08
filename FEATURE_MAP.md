@@ -5,7 +5,8 @@
 The storefront is a single 4 oz Herbal Ice item at `/products/herbal-ice`.
 `herbal-ice-4oz` is the product identity; Commerce owns the one Strength option,
 member item IDs, prices, and availability. Prices are seeded through Commerce
-as 2000/6000/10000 USD cents for the three strengths. `public/images/herbal-ice-*.webp` are temporary SMCBD-branded stubs
+as 2000/6000/10000 USD cents for the three strengths. Worker/D1/R2 identities
+are `smokychill` / `smokychill` / `smokychill-media`. `public/images/herbal-ice-*.webp` are temporary SMCBD-branded stubs
 pending a Smoky Chill photoshoot and must be replaced before launch. The
 homepage and product page use the `primary` EmDash menu and preserve CMS
 ownership after bootstrap.

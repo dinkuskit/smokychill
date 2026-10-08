@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "dinkuskit-template-demo",
+  "name": "smokychill",
   "main": "./src/worker.ts",
   "compatibility_date": "2026-09-30",
   "compatibility_flags": [
@@ -19,13 +19,13 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "dinkuskit-template-demo"
+      "database_name": "smokychill"
     }
   ],
   "r2_buckets": [
     {
       "binding": "MEDIA",
-      "bucket_name": "dinkuskit-template-demo-media"
+      "bucket_name": "smokychill-media"
     }
   ],
   "ratelimits": [
