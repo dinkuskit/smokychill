@@ -3,6 +3,8 @@ import type { InstalledCatalogContext } from "./installed.js";
 export interface PublicStrengthMember {
   catalogItemId: string;
   selections: readonly { optionId: string; optionLabel: string; valueId: string; valueLabel: string }[];
+  price: { currency: "USD"; minor: string };
+  availability: { status: string; sellable: boolean; listable: boolean };
   fulfillment: "physical" | "digital";
 }
 
@@ -18,9 +20,8 @@ function object(value: unknown): value is Record<string, unknown> {
 
 /**
  * Reads Commerce's grouped public projection. It intentionally returns null
- * when the installed projection is unavailable or when all unpriced members
- * are filtered by Commerce; the CMS seed remains the editable bootstrap until
- * prices are supplied.
+ * when the installed projection is unavailable or when Commerce filters all
+ * members. Prices and listability below are server-owned Commerce facts.
  */
 export async function readPublicVariantProduct(
   context: InstalledCatalogContext,
@@ -45,13 +46,27 @@ export async function readPublicVariantProduct(
   const members = product.variants.members.flatMap((member): PublicStrengthMember[] => {
     if (!object(member) || typeof member.catalogItemId !== "string" ||
         (member.fulfillment !== "physical" && member.fulfillment !== "digital") ||
-        !Array.isArray(member.selections)) return [];
+        !Array.isArray(member.selections) || !object(member.price) ||
+        member.price.currency !== "USD" || typeof member.price.minor !== "string" ||
+        !object(member.availability) || typeof member.availability.status !== "string" ||
+        typeof member.availability.sellable !== "boolean" ||
+        typeof member.availability.listable !== "boolean") return [];
     const selections = member.selections.flatMap((selection) => {
       if (!object(selection) || typeof selection.optionId !== "string" || typeof selection.valueId !== "string" ||
           typeof selection.optionLabel !== "string" || typeof selection.valueLabel !== "string") return [];
       return [{ optionId: selection.optionId, optionLabel: selection.optionLabel, valueId: selection.valueId, valueLabel: selection.valueLabel }];
     });
-    return [{ catalogItemId: member.catalogItemId, selections, fulfillment: member.fulfillment }];
+    return [{
+      catalogItemId: member.catalogItemId,
+      selections,
+      price: { currency: "USD", minor: member.price.minor },
+      availability: {
+        status: member.availability.status,
+        sellable: member.availability.sellable,
+        listable: member.availability.listable,
+      },
+      fulfillment: member.fulfillment,
+    }];
   });
   return {
     productId: product.variants.productId,

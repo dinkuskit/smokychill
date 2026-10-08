@@ -3,15 +3,17 @@
 ## Smoky Chill v1 scaffold
 
 The storefront is a single 4 oz Herbal Ice item at `/products/herbal-ice`.
-`herbal-ice-4oz` is the product identity; Commerce owns the one Strength option
-and its member item IDs. Prices remain unset until supplied. `public/images/herbal-ice-*.webp` are temporary SMCBD-branded stubs
+`herbal-ice-4oz` is the product identity; Commerce owns the one Strength option,
+member item IDs, prices, and availability. Prices are seeded through Commerce
+as 2000/6000/10000 USD cents for the three strengths. `public/images/herbal-ice-*.webp` are temporary SMCBD-branded stubs
 pending a Smoky Chill photoshoot and must be replaced before launch. The
 homepage and product page use the `primary` EmDash menu and preserve CMS
 ownership after bootstrap.
 
 Checkout is intentionally fail-closed with `PAYMENTS_UNAVAILABLE`: no browser
-price, webhook, or return URL can establish payment. Product JSON-LD has no
-Offer until a strength price is supplied.
+price, webhook, or return URL can establish payment. Product JSON-LD emits
+per-strength Offers only when the grouped Commerce projection supplies the
+authoritative price and SKU join.
 
 The public route inventory also includes `/about`, `/faq`, `/contact`,
 `/shipping-policy`, `/shipping/returns`, `/privacy`, `/terms`, `/cart`, and

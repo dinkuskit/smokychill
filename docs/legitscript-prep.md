@@ -24,7 +24,7 @@ claims certification, or replaces labeling counsel.
 
 ## Blocked before publication or advertising
 
-- Retail price and UPC/SKU.
+- UPC/GTIN (none has been issued; it remains optional and is never invented).
 - Final brand line on the jar.
 - Product and application photography.
 - Batch COA and confirmation of the label's CBD/THC statements. Until a COA

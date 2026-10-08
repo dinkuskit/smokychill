@@ -17,6 +17,7 @@ import {
   clearCatalogItemSalePrice,
   createCatalogItem,
   createPlugin,
+  addCatalogVariantOption,
   listCatalogProducts,
   setCatalogItemManualAvailability,
   setCatalogItemRegularPrice,
@@ -44,6 +45,7 @@ import {
   DEFAULT_PERSIST_PATH,
   DEMO_D1_BINDING,
   DEMO_PRODUCTS,
+  SMOKY_CHILL_PRODUCTS,
   isDemoSku,
   LOCAL_CONFIG_PATH,
   LOCAL_ID_PATH,
@@ -387,6 +389,85 @@ async function ensureProduct(
   return action;
 }
 
+async function ensureHerbalIce(
+  storage: {
+    catalog: PluginStorageRepository<CatalogStorageRecord>;
+    prices: PluginStorageRepository<CatalogPriceRecord>;
+    availability: PluginStorageRepository<CatalogManualAvailabilityRecord>;
+  },
+): Promise<void> {
+  const parent = await createCatalogItem(
+    storage.catalog,
+    {
+      commandId: "seed-smoky-chill-herbal-ice-product",
+      manageStock: false,
+      name: "Herbal Ice Cooling Balm",
+      sku: "SPC-HI4-1000",
+      fulfillment: "physical",
+    },
+    { createId: () => "herbal-ice-4oz" },
+  );
+  const variant = await addCatalogVariantOption(
+    { catalog: storage.catalog },
+    {
+      productId: parent.item.itemId,
+      optionId: "strength",
+      optionLabel: "Strength",
+      values: [
+        {
+          valueId: "1000-mg",
+          label: "1,000 mg",
+          member: { catalogItemId: parent.item.itemId, fulfillment: "physical" },
+        },
+        {
+          valueId: "5000-mg",
+          label: "5,000 mg",
+          member: {
+            commandId: "seed-smoky-chill-herbal-ice-5000",
+            name: "Herbal Ice Cooling Balm",
+            sku: "SPC-HI4-5000",
+            fulfillment: "physical",
+          },
+        },
+        {
+          valueId: "10000-mg",
+          label: "10,000 mg",
+          member: {
+            commandId: "seed-smoky-chill-herbal-ice-10000",
+            name: "Herbal Ice Cooling Balm",
+            sku: "SPC-HI4-10000",
+            fulfillment: "physical",
+          },
+        },
+      ],
+    },
+  );
+  const prices = new Map(SMOKY_CHILL_PRODUCTS.map((product) => [product.sku, product.regularMinor]));
+  for (const member of variant.product.members) {
+    const valueId = member.selections[0]?.valueId;
+    const sku = valueId === "1000-mg" ? "SPC-HI4-1000" :
+      valueId === "5000-mg" ? "SPC-HI4-5000" :
+      valueId === "10000-mg" ? "SPC-HI4-10000" : undefined;
+    const amount = sku === undefined ? undefined : prices.get(sku);
+    if (amount === undefined) throw new SeedRefusal("HERBAL_ICE_VARIANT_INVALID", "Herbal Ice variant has an unknown strength.");
+    await setCatalogItemRegularPrice(storage, {
+      catalogItemId: member.catalogItemId,
+      amount: { currency: "USD", minor: amount },
+    });
+    await setCatalogItemManualAvailability(storage, {
+      catalogItemId: member.catalogItemId,
+      status: "in-stock",
+    });
+    emit("seed.sku", {
+      sku,
+      catalogItemId: member.catalogItemId,
+      action: "ensured",
+      regularMinor: amount,
+      availability: "in-stock",
+    });
+  }
+}
+
 async function assertNeutralHome(db: EmDashDb, sql: KyselyModule["sql"]): Promise<void> {
   const collections = await sql<{ slug: string }>`
     select slug from _emdash_collections
@@ -508,6 +589,7 @@ async function seedCanonical(
           availability: product.availability,
         });
       }
+      await ensureHerbalIce(storage);
 
       const after = snapshot(await readProducts(storage));
       const nonDemoAfter = [...after.values()].filter((product) => !isDemoSku(product.sku));
@@ -523,6 +605,11 @@ async function seedCanonical(
       for (const product of DEMO_PRODUCTS) {
         if (!after.has(product.sku)) {
           throw new SeedRefusal("DEMO_SKU_MISSING", `${product.sku} was not stored.`);
+        }
+      }
+      for (const product of SMOKY_CHILL_PRODUCTS) {
+        if (!after.has(product.sku)) {
+          throw new SeedRefusal("HERBAL_ICE_SKU_MISSING", `${product.sku} was not stored.`);
         }
       }
       emit("seed.preserved", { nonDemo: nonDemoBefore.length, unchanged: true });

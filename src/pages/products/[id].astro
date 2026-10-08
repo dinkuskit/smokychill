@@ -4,6 +4,7 @@ import SiteHeader from "../../components/SiteHeader.astro";
 import SiteFooter from "../../components/SiteFooter.astro";
 import { STORE_TITLE, collectionPath, loadStorefrontRouteContext, productPath } from "../../features/store-shell/index.js";
 import { readPublicVariantProduct } from "../../features/commerce-catalog/variant-public.js";
+import { formatUsdMinor } from "../../features/store-shell/price.js";
 import "../../features/store-shell/global.css";
 import seed from "../../../seed/seed.json";
 
@@ -35,15 +36,19 @@ const commerceVariants = await readPublicVariantProduct(
 const strengths = commerceVariants?.members.length
   ? commerceVariants.members.map((member) => ({
       mg: member.selections.find((selection) => selection.optionLabel === "Strength")?.valueLabel ?? "Strength",
-      sku: cmsStrengths.find((strength) => strength.sku === member.catalogItemId)?.sku ?? member.catalogItemId,
+      sku: cmsStrengths.find((strength) => `${strength.mg} mg` === member.selections.find((selection) => selection.optionLabel === "Strength")?.valueLabel)?.sku ?? "Pending",
       itemId: member.catalogItemId,
-      formulaStatus: cmsStrengths.find((strength) => strength.sku === member.catalogItemId)?.formula_status ?? "Formula details pending.",
+      priceMinor: member.price.minor,
+      priceText: formatUsdMinor(member.price.minor),
+      formulaStatus: cmsStrengths.find((strength) => `${strength.mg} mg` === member.selections.find((selection) => selection.optionLabel === "Strength")?.valueLabel)?.formula_status ?? "Formula details pending.",
       coaStatus: "COA coming soon",
     }))
   : cmsStrengths.map((strength) => ({
       mg: `${strength.mg} mg`,
       sku: strength.sku as string,
       itemId: strength.sku as string,
+      priceMinor: null,
+      priceText: null,
       formulaStatus: typeof strength.formula_status === "string" ? strength.formula_status : "Formula details pending.",
       coaStatus: "COA coming soon",
     }));
@@ -64,7 +69,7 @@ const status = managed ? `${managed.inventory.available} available` : unmanaged 
     <meta name="description" content={item?.description ?? "Product not found."} />
     {item && <link rel="canonical" href={`${Astro.site ?? Astro.url.origin}/products/herbal-ice`} />}
     <title>{item ? `${item.title} | ${STORE_TITLE}` : `Product not found | ${STORE_TITLE}`}</title>
-    {item && <script type="application/ld+json" set:html={JSON.stringify({
+    {item && commerceVariants && <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "Product",
       name: "Herbal Ice Cooling Balm",
@@ -83,6 +88,13 @@ const status = managed ? `${managed.inventory.available} available` : unmanaged 
         sku: strength.sku,
         brand: { "@type": "Brand", name: "Smoky Co" },
         manufacturer: { "@type": "Organization", name: "Smoky Product Company" },
+        offers: {
+          "@type": "Offer",
+          price: Number(strength.priceMinor) / 100,
+          priceCurrency: "USD",
+          sku: strength.sku,
+          url: `${Astro.url.origin}/products/herbal-ice`,
+        },
       })),
     })} />}
   </head>
@@ -103,10 +115,10 @@ const status = managed ? `${managed.inventory.available} available` : unmanaged 
             </select>
             <p class="strength-meta" data-strength-mg>Selected strength: {defaultStrength?.mg ?? "Pending"}</p>
             <p class="strength-meta" data-strength-sku>SKU: {defaultStrength?.sku ?? "Pending"}</p>
+            <p class="product-detail__price" data-strength-price>{defaultStrength?.priceText ?? "Commerce price unavailable"}</p>
             <p class="strength-meta" data-strength-status>{defaultStrength?.formulaStatus ?? "Formula details pending."} {defaultStrength?.coaStatus ?? "COA coming soon"}</p>
             {managed && <p class="product-detail__price" data-product-price><strong data-regular-price>{managed.price.regularText}</strong></p>}
             {unmanaged && <p class="product-detail__price" data-product-price>{unmanaged.price.saleText ? <><s data-regular-price>{unmanaged.price.regularText}</s> <strong data-sale-price>{unmanaged.price.saleText}</strong></> : <strong data-regular-price>{unmanaged.price.regularText}</strong>}</p>}
-            {!managed && !unmanaged && <p class="product-detail__price product-detail__price--pending">Price coming soon <small>CMS placeholder</small></p>}
             <p class="product-detail__status" data-product-status data-availability-status={unmanaged?.storefront.status}>{status}</p>
             <p class="product-detail__notice">Checkout unavailable until a server-owned Payments binding exists. Product copy remains a CMS draft.</p>
             <div class="product-detail__facts"><h2>Details</h2><ul><li>Menthol and camphor cooling balm</li><li>4 oz jar · select a CBD strength above</li><li>Topical use only; not for ingestion</li><li>Batch COA: <strong>coming soon</strong></li><li>Manufactured by Smoky Product Company, 55 Eagles Nest Trail, Murphy, NC 28906</li></ul></div>
@@ -125,11 +137,13 @@ const status = managed ? `${managed.inventory.available} available` : unmanaged 
   const sku = document.querySelector("[data-strength-sku]");
   const mg = document.querySelector("[data-strength-mg]");
   const status = document.querySelector("[data-strength-status]");
+  const price = document.querySelector("[data-strength-price]");
   selector?.addEventListener("change", () => {
     const selected = strengths.find((strength) => strength.itemId === selector.value);
-    if (selected && sku && mg && status) {
+    if (selected && sku && mg && status && price) {
       mg.textContent = `Selected strength: ${selected.mg}`;
       sku.textContent = `SKU: ${selected.sku}`;
+      price.textContent = selected.priceText ?? "Commerce price unavailable";
       status.textContent = `${selected.formulaStatus} ${selected.coaStatus}`;
     }
   });

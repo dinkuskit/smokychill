@@ -9,11 +9,12 @@ const { size = "hero" } = Astro.props;
   <defs>
     <linearGradient id={`chill-ice-${size}`} x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#ffffff" />
-      <stop offset=".45" stop-color="#dff8ff" />
-      <stop offset="1" stop-color="#8fd2e2" />
+      <stop offset=".32" stop-color="#e8fbff" />
+      <stop offset=".72" stop-color="#b7eaf5" />
+      <stop offset="1" stop-color="#76bfd7" />
     </linearGradient>
   </defs>
-  <text x="10" y="88" fill={`url(#chill-ice-${size})`} stroke="#4aafc8" stroke-width="3" paint-order="stroke" font-family="Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif" font-size="86" font-weight="900" letter-spacing="4">CHILL</text>
-  <path d="M67 88c0 13-4 21-11 21-6 0-8-5-8-12v-9zm83 0c0 17-4 27-12 27-7 0-9-7-9-17V88zm173 0c0 14-4 23-11 23-7 0-9-6-9-14V88zm78 0c0 11-3 18-9 18-6 0-8-5-8-12V88z" fill="#9ad9e7" opacity=".9" />
-  <path d="M29 35l18-7m63 1 17-6m128 6 19-7m70 10 14-5" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".8" />
+  <text x="10" y="88" fill={`url(#chill-ice-${size})`} stroke="#2c7898" stroke-width={size === "header" ? 4 : 6} paint-order="stroke" stroke-linejoin="round" font-family="Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif" font-size="86" font-weight="900" letter-spacing="4">CHILL</text>
+  {size === "hero" && <path d="M48 88v10c0 7 2 12 8 12 7 0 11-8 11-22v-3zm75 0v13c0 10 2 17 9 17 8 0 12-10 12-27v-3zm161 0v9c0 8 2 14 9 14 7 0 11-9 11-23v-1zm70 0v6c0 7 2 12 8 12 6 0 9-7 9-18h-17z" fill="#79c5dc" stroke="#2c7898" stroke-width="2" stroke-linejoin="round" />}
+  <path d="M30 35l18-7m63 1 17-6m128 6 19-7m70 10 14-5" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".95" />
 </svg>

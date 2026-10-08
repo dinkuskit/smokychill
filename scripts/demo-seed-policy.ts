@@ -68,6 +68,33 @@ export const DEMO_PRODUCTS: readonly DemoProductSeed[] = Object.freeze([
   },
 ]);
 
+export const SMOKY_CHILL_PRODUCTS: readonly DemoProductSeed[] = Object.freeze([
+  {
+    commandId: "seed-smoky-chill-herbal-ice-1000",
+    name: "Herbal Ice Cooling Balm",
+    sku: "SPC-HI4-1000",
+    regularMinor: "2000",
+    saleMinor: null,
+    availability: "in-stock",
+  },
+  {
+    commandId: "seed-smoky-chill-herbal-ice-5000",
+    name: "Herbal Ice Cooling Balm",
+    sku: "SPC-HI4-5000",
+    regularMinor: "6000",
+    saleMinor: null,
+    availability: "in-stock",
+  },
+  {
+    commandId: "seed-smoky-chill-herbal-ice-10000",
+    name: "Herbal Ice Cooling Balm",
+    sku: "SPC-HI4-10000",
+    regularMinor: "10000",
+    saleMinor: null,
+    availability: "in-stock",
+  },
+]);
+
 export const DEMO_SKUS: ReadonlySet<string> = new Set(
   DEMO_PRODUCTS.map((product) => product.sku),
 );
@@ -498,5 +525,6 @@ export function assertCommerceSkuIndexPresent(indexNames: readonly string[]): vo
 }
 
 export function isDemoSku(sku: string): boolean {
-  return DEMO_SKUS.has(sku.toUpperCase());
+  return DEMO_SKUS.has(sku.toUpperCase()) ||
+    SMOKY_CHILL_PRODUCTS.some((product) => product.sku === sku.toUpperCase());
 }

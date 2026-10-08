@@ -44,7 +44,7 @@ bin/verify-site http://localhost:4321
 
 ## Remaining launch blockers
 
-Retail prices, UPC/GTIN, product photos/rebrand photoshoot, pending batch COAs,
+UPC/GTIN, product photos/rebrand photoshoot, pending batch COAs,
 higher-strength formulation testing, returns policy, OTC drug-facts /
 menthol-camphor labeling counsel, and Payments/Commerce readiness remain
 blockers. Shipping Policy is seeded from the Ryan-approved interim text; verify
