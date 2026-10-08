@@ -1,10 +1,12 @@
 ---
 import { getMenu } from "emdash";
 import { GuestCartNav } from "../features/guest-cart/ui.ts";
+import Analytics from "./Analytics.astro";
 
 const menu = await getMenu("primary");
 ---
 <div class="site-notice" role="status">Draft storefront · checkout unavailable until a server-owned Payments binding exists.</div>
+<Analytics />
 <header class="site-header">
   <a class="site-brand" href="/" aria-label="Smoky Chill home"><span>smoky</span>chill<span class="site-brand__ice">°</span></a>
   <nav class="site-nav" aria-label="Primary navigation">

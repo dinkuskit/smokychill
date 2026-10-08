@@ -68,7 +68,8 @@ const status = managed ? `${managed.inventory.available} available` : unmanaged 
             {!managed && !unmanaged && <p class="product-detail__price product-detail__price--pending">Price coming soon <small>CMS placeholder</small></p>}
             <p class="product-detail__status" data-product-status data-availability-status={unmanaged?.storefront.status}>{status}</p>
             <p class="product-detail__notice">Checkout unavailable until a server-owned Payments binding exists. Product copy remains a CMS draft.</p>
-            <div class="product-detail__facts"><h2>Details</h2><ul><li>Menthol (10%) and camphor (5%)</li><li>CBD isolate, approximately 1,000 mg per 4 oz jar</li><li>Topical use only; not for ingestion</li><li>Batch COA: <strong>pending</strong></li></ul></div>
+            <div class="product-detail__facts"><h2>Details</h2><ul><li>Menthol (10%) and camphor (5%)</li><li>CBD isolate, approximately 1,000 mg per 4 oz jar</li><li>Topical use only; not for ingestion</li><li>Batch COA: <strong>pending</strong></li><li>Made by Smoky Product Company <strong>[brand line pending]</strong></li></ul></div>
+            <div class="product-detail__facts"><h2>Ingredients</h2><p>Coco-Caprylate/Caprate, Babassu Oil, White Beeswax, Cetyl Alcohol, Menthol Crystals, Cera Bellina (Polyglyceryl-3 Beeswax), Camphor Crystals, Japanese Peppermint Essential Oil, Eucalyptus Globulus Essential Oil, CBD Isolate, Vitamin E (T95 / Tocopherol), Alpha Bisabolol.</p></div>
             <div class="product-detail__facts"><h2>How to use</h2><p>Apply to skin as desired. Wash hands after application. Avoid eyes and mucous membranes. For external use only. Keep out of reach of children.</p></div>
             <a class="product-detail__back" href={collectionHref}>← Back home</a>
           </div>

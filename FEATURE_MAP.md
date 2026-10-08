@@ -15,6 +15,12 @@ price, webhook, or return URL can establish payment. Product JSON-LD includes
 an Offer shell without an invented price and is marked pre-order until CMS
 pricing is supplied.
 
+The public route inventory also includes `/about`, `/faq`, `/contact`,
+`/shipping/returns`, `/privacy`, `/terms`, `/cart`, and checkout success/cancel
+return pages. Policy and support pages are explicitly draft placeholders.
+LegitScript preparation lives in `docs/legitscript-prep.md`; optional,
+ID-gated GA4/Meta/X measurement is documented in `docs/tracking.md`.
+
 This map is the repository contract for bounded template work. Features own
 their implementation, tests, and public entry. Cross-feature access goes
 through its declared public entry. `index.ts` is the default. The guest cart

@@ -31,6 +31,7 @@ bin/verify-site http://localhost:4321
 - **URLs:** the homepage is `/`; the canonical product is `/products/herbal-ice`; its permanent item ID is `herbal-ice-4oz`.
 - **Checkout:** disabled with `PAYMENTS_UNAVAILABLE` until a server-owned Payments binding exists. Browser prices and webhooks are never payment authority.
 - **Verification:** `FEATURE_MAP.md` lists every page and feature, and `bin/verify-site` crawls every internal link, rejecting 404s and encoded slashes.
+- **Measurement:** optional GA4, Meta Pixel, and X Pixel integrations are ID-gated; see [`docs/tracking.md`](docs/tracking.md). No IDs or secrets are committed.
 
 ## Product and compliance guardrails
 
@@ -42,6 +43,9 @@ bin/verify-site http://localhost:4321
 ## Remaining launch blockers
 
 Rebrand/photoshoot, retail price, UPC/SKU, batch COA, final brand line, shipping/returns policy, labeling counsel, and a server-owned Payments binding.
+
+LegitScript preparation and blocked claims are documented in
+[`docs/legitscript-prep.md`](docs/legitscript-prep.md).
 
 ## License
 
