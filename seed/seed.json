@@ -194,9 +194,9 @@
               "headline": "Meet Herbal Ice",
               "deck": "A cooling topical balm with menthol, camphor, and CBD isolate. Checkout is not available yet.",
               "primaryLabel": "Explore Herbal Ice",
-              "primaryHref": "/products/herbal-ice",
+              "primaryHref": "#commerce-catalog",
               "secondaryLabel": "Our story",
-              "secondaryHref": "/about"
+              "secondaryHref": "#commerce-catalog"
             }
           ],
           "layout": [
@@ -208,9 +208,9 @@
               "headline": "Meet Herbal Ice",
               "deck": "A cooling topical balm with menthol, camphor, and CBD isolate. Checkout is not available yet.",
               "primary_label": "Explore Herbal Ice",
-              "primary_href": "/products/herbal-ice",
+              "primary_href": "#commerce-catalog",
               "secondary_label": "Our story",
-              "secondary_href": "/about",
+              "secondary_href": "#commerce-catalog",
               "facts": [
                 {
                   "label": "Size",
