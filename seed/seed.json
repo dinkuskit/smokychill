@@ -1,0 +1,810 @@
+{
+  "$schema": "https://emdashcms.com/seed.schema.json",
+  "version": "1",
+  "meta": {
+    "name": "Smoky Chill storefront",
+    "description": "Draft seed for the Herbal Ice 4 oz cooling balm storefront.",
+    "author": "Smoky Chill"
+  },
+  "collections": [
+    {
+      "slug": "pages",
+      "label": "Pages",
+      "labelSingular": "Page",
+      "supports": [
+        "drafts",
+        "revisions",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText"
+        },
+        {
+          "slug": "layout",
+          "label": "Layout",
+          "type": "blocks",
+          "validation": {
+            "allowedTypes": [
+              "home_opener",
+              "rich_text"
+            ],
+            "maxItems": 20
+          }
+        }
+      ]
+    },
+    {
+      "slug": "products",
+      "label": "Products",
+      "labelSingular": "Product",
+      "supports": [
+        "drafts",
+        "revisions",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Product title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "item_id",
+          "label": "Permanent Commerce item ID",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "description",
+          "label": "Description",
+          "type": "text"
+        },
+        {
+          "slug": "ingredients",
+          "label": "Ingredients",
+          "type": "text"
+        },
+        {
+          "slug": "price",
+          "label": "Retail price placeholder",
+          "type": "string"
+        },
+        {
+          "slug": "upc",
+          "label": "UPC placeholder",
+          "type": "string"
+        },
+        {
+          "slug": "featured_image",
+          "label": "Product image",
+          "type": "image"
+        },
+        {
+          "slug": "brand",
+          "label": "Brand line",
+          "type": "string"
+        },
+        {
+          "slug": "manufacturer",
+          "label": "Manufacturer",
+          "type": "string"
+        },
+        {
+          "slug": "manufacturer_address",
+          "label": "Manufacturer address",
+          "type": "string"
+        },
+        {
+          "slug": "gtin",
+          "label": "GTIN / UPC (optional)",
+          "type": "string"
+        },
+        {
+          "slug": "strengths",
+          "label": "CBD strengths and SKUs",
+          "type": "repeater",
+          "validation": {
+            "subFields": [
+              {
+                "slug": "mg",
+                "label": "CBD milligrams",
+                "type": "integer",
+                "required": true
+              },
+              {
+                "slug": "sku",
+                "label": "SKU",
+                "type": "string",
+                "required": true
+              },
+              {
+                "slug": "formula_status",
+                "label": "Formula status",
+                "type": "string"
+              },
+              {
+                "slug": "coa_status",
+                "label": "COA status",
+                "type": "string"
+              },
+              {
+                "slug": "price",
+                "label": "Price (leave blank until confirmed)",
+                "type": "string"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "slug": "merchandise",
+      "label": "Merchandise",
+      "labelSingular": "Merch item",
+      "supports": [
+        "drafts",
+        "revisions"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Display title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "category",
+          "label": "Collection name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "slug": "description",
+          "label": "Short description",
+          "type": "string"
+        },
+        {
+          "slug": "visual_label",
+          "label": "Visual label",
+          "type": "string",
+          "required": true
+        }
+      ]
+    }
+  ],
+  "sections": [
+    {
+      "slug": "home-opener",
+      "title": "Home opener",
+      "description": "Copied page opener: one hero, then a short fact rail. Later edits to this library section do not change copies already inserted.",
+      "keywords": [
+        "home",
+        "opener",
+        "homepage",
+        "hero",
+        "welcome",
+        "introduction",
+        "facts"
+      ],
+      "source": "theme",
+      "content": [
+        {
+          "_type": "dinkus.page-hero",
+          "_key": "home-opener-hero",
+          "eyebrow": "Start here",
+          "headline": "Welcome to the shop",
+          "deck": "Browse products published in Commerce. Checkout is not available yet.",
+          "primary_label": "Browse the shop",
+          "primary_href": "#commerce-catalog",
+          "secondary_label": "View products",
+          "secondary_href": "#commerce-catalog"
+        },
+        {
+          "_type": "dinkus.fact-rail",
+          "_key": "home-opener-facts",
+          "ariaLabel": "Shop opener facts",
+          "facts": [
+            {
+              "_key": "home-opener-fact-hours",
+              "label": "Hours",
+              "value": "Posted by the shop"
+            },
+            {
+              "_key": "home-opener-fact-visit",
+              "label": "Visit",
+              "value": "Come in or order ahead"
+            },
+            {
+              "_key": "home-opener-fact-notes",
+              "label": "Notes",
+              "value": "Rewrite this rail"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "content": {
+    "pages": [
+      {
+        "id": "home",
+        "slug": "home",
+        "status": "published",
+        "data": {
+          "title": "Smoky Chill",
+          "content": [
+            {
+              "_type": "dinkus.page-hero",
+              "_key": "store-hero",
+              "eyebrow": "A cool-down ritual for skin",
+              "headline": "Meet Herbal Ice",
+              "deck": "A cooling topical balm with menthol, camphor, and CBD isolate. Checkout is not available yet.",
+              "primaryLabel": "Explore Herbal Ice",
+              "primaryHref": "#commerce-catalog",
+              "secondaryLabel": "Our story",
+              "secondaryHref": "#commerce-catalog"
+            }
+          ],
+          "layout": [
+            {
+              "_type": "home_opener",
+              "_version": 1,
+              "_key": "store-home-opener",
+              "eyebrow": "A cool-down ritual for skin",
+              "headline": "Meet Herbal Ice",
+              "deck": "A cooling topical balm with menthol, camphor, and CBD isolate. Checkout is not available yet.",
+              "primary_label": "Explore Herbal Ice",
+              "primary_href": "#commerce-catalog",
+              "secondary_label": "Our story",
+              "secondary_href": "#commerce-catalog",
+              "facts": [
+                {
+                  "label": "Size",
+                  "value": "4 oz jar"
+                },
+                {
+                  "label": "Formula",
+                  "value": "Menthol + camphor"
+                },
+                {
+                  "label": "Checkout",
+                  "value": "Unavailable until Payments binding"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "about",
+        "slug": "about",
+        "status": "draft",
+        "data": {
+          "title": "Our story \u2014 draft",
+          "content": [
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Draft page \u2014 brand story pending approval."
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "faq",
+        "slug": "faq",
+        "status": "draft",
+        "data": {
+          "title": "FAQ \u2014 draft",
+          "content": [
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Draft FAQ \u2014 shipping policy and COA link pending."
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "contact",
+        "slug": "contact",
+        "status": "draft",
+        "data": {
+          "title": "Contact \u2014 draft",
+          "content": [
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Draft contact page \u2014 support details pending."
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "shipping-returns",
+        "slug": "shipping-returns",
+        "status": "draft",
+        "data": {
+          "title": "Shipping & returns \u2014 draft",
+          "content": [
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Draft policy \u2014 shipping and returns terms pending approval."
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "privacy",
+        "slug": "privacy",
+        "status": "draft",
+        "data": {
+          "title": "Privacy \u2014 draft",
+          "content": [
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Draft policy \u2014 legal review pending."
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "terms",
+        "slug": "terms",
+        "status": "draft",
+        "data": {
+          "title": "Terms \u2014 draft",
+          "content": [
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Draft policy \u2014 legal review pending."
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "shipping-policy",
+        "slug": "shipping-policy",
+        "status": "published",
+        "data": {
+          "title": "Shipping Policy",
+          "content": [
+            {
+              "_type": "block",
+              "style": "h2",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Shipping Policy"
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Last updated: October 2026"
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Shipping coverage: We currently ship within the United States only."
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Processing time: Orders are typically processed and shipped within 1\u20133 business days (Monday\u2013Friday, excluding holidays). We do our best to ship same-day when possible."
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Shipping methods: Shipping options are shown at checkout and may include: Free Ground Shipping (when your order qualifies); USPS Ground Advantage (Ground); USPS Priority Mail (Priority)."
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Packaging and discretion: All orders are shipped discreetly under the name SMCLLC. Packages are sent in a standard, unbranded cardboard box with no indication of the contents or company branding on the outside."
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Delivery time estimates: Delivery time begins after your order ships: USPS Ground Advantage: expected 2\u20135 business days. USPS Priority Mail: expected 2\u20133 days (not guaranteed). Carrier delays can occur due to volume, weather, and other factors outside our control."
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Tracking: Tracking is provided once your order ships. Tracking may take 24\u201348 hours to update after the carrier\u2019s first scan."
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Address accuracy: Please double-check your shipping address at checkout. If an address is incomplete or incorrect, delivery may be delayed, returned, or marked delivered to the wrong location."
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Delivery issues, missing packages, and claims: We\u2019re responsible for processing your order accurately and handing it off to USPS. Once USPS accepts the package and tracking begins, delivery timing and handling are controlled by the carrier. If there\u2019s a delivery issue, contact us. We\u2019ll help you follow the right USPS process. Reshipments or refunds are not automatic and are handled case-by-case based on tracking, address verification, and the USPS outcome."
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "If the package appears delayed or tracking isn\u2019t moving: Start with USPS help resources and allow normal transit time. If it continues without delivery, we can assist you with the next appropriate USPS step, including a Missing Mail search when applicable."
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "If tracking shows \u201cDelivered\u201d but you don\u2019t have it: Before it can be treated as lost, you must: check around the delivery location (porch, side door, mailbox, parcel locker); check with household members or building staff; contact your local post office to request investigation of the delivery scan. We\u2019ll provide the details we have (tracking, ship date) and assist with the process."
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "When a USPS claim becomes applicable: USPS has specific claim windows and documentation requirements for insured services. If a claim is applicable, we\u2019ll assist with the information we can provide and guide you on what USPS requires."
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Damaged packages: If your package arrives damaged, contact us promptly with photos of: the shipping box; the shipping label; the damaged product(s)."
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "style": "normal",
+              "children": [
+                {
+                  "_type": "span",
+                  "text": "Contact: If you need help with a delivery issue, Contact Us."
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "products": [
+      {
+        "id": "herbal-ice-draft",
+        "slug": "herbal-ice",
+        "status": "published",
+        "data": {
+          "title": "Herbal Ice Cooling Balm",
+          "item_id": "herbal-ice-4oz",
+          "description": "A cooling topical balm with menthol and camphor, made with CBD isolate in three strengths. Fans nicknamed it \u201cthe ice balm.\u201d",
+          "ingredients": "Coco-Caprylate/Caprate; Babassu Oil; White Beeswax; Cetyl Alcohol; Menthol Crystals; Cera Bellina (Polyglyceryl-3 Beeswax); Camphor Crystals; Japanese Peppermint Essential Oil; Eucalyptus Globulus Essential Oil; CBD Isolate; Vitamin E (T95 / Tocopherol); Alpha Bisabolol.",
+          "price": "Commerce-managed; see the Strength members for current USD prices.",
+          "upc": "[OPEN: UPC / SKU]",
+          "featured_image": {
+            "$media": {
+              "url": "https://smokychill.com/images/herbal-ice-hero.webp",
+              "alt": "Herbal Ice 4 oz cooling balm jar",
+              "filename": "herbal-ice-hero.webp"
+            }
+          },
+          "brand": "Smoky Co",
+          "manufacturer": "Manufactured by Smoky Product Company",
+          "manufacturer_address": "55 Eagles Nest Trail, Murphy, NC 28906",
+          "gtin": "",
+          "strengths": [
+            {
+              "mg": 1000,
+              "sku": "SPC-HI4-1000",
+              "formula_status": "Reference formula documented; approximately 1% CBD isolate.",
+              "coa_status": "COA coming soon",
+              "price": ""
+            },
+            {
+              "mg": 5000,
+              "sku": "SPC-HI4-5000",
+              "formula_status": "Higher-strength formulation testing pending; percentages not finalized.",
+              "coa_status": "COA coming soon",
+              "price": ""
+            },
+            {
+              "mg": 10000,
+              "sku": "SPC-HI4-10000",
+              "formula_status": "Higher-strength formulation testing pending; percentages not finalized.",
+              "coa_status": "COA coming soon",
+              "price": ""
+            }
+          ]
+        }
+      }
+    ],
+    "merchandise": [
+      {
+        "id": "herbal-ice",
+        "slug": "herbal-ice",
+        "status": "published",
+        "data": {
+          "title": "Herbal Ice Cooling Balm",
+          "category": "Herbal Ice",
+          "description": "A cooling topical balm with menthol and camphor, made with CBD isolate in three strengths. Fans nicknamed it \u201cthe ice balm.\u201d",
+          "visual_label": "BALM"
+        }
+      }
+    ]
+  },
+  "blockTypes": [
+    {
+      "slug": "home_opener",
+      "label": "Home opener",
+      "category": "Layout",
+      "currentVersion": 1,
+      "versions": [
+        {
+          "version": 1,
+          "fields": [
+            {
+              "slug": "eyebrow",
+              "label": "Eyebrow",
+              "type": "string"
+            },
+            {
+              "slug": "headline",
+              "label": "Headline",
+              "type": "string",
+              "required": true
+            },
+            {
+              "slug": "deck",
+              "label": "Introduction",
+              "type": "text"
+            },
+            {
+              "slug": "primary_label",
+              "label": "Primary link label",
+              "type": "string"
+            },
+            {
+              "slug": "primary_href",
+              "label": "Primary link URL",
+              "type": "string"
+            },
+            {
+              "slug": "secondary_label",
+              "label": "Secondary link label",
+              "type": "string"
+            },
+            {
+              "slug": "secondary_href",
+              "label": "Secondary link URL",
+              "type": "string"
+            },
+            {
+              "slug": "facts",
+              "label": "Facts",
+              "type": "repeater",
+              "validation": {
+                "subFields": [
+                  {
+                    "slug": "label",
+                    "label": "Label",
+                    "type": "string",
+                    "required": true
+                  },
+                  {
+                    "slug": "value",
+                    "label": "Value",
+                    "type": "string",
+                    "required": true
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "rich_text",
+      "label": "Rich text",
+      "category": "Content",
+      "currentVersion": 1,
+      "versions": [
+        {
+          "version": 1,
+          "fields": [
+            {
+              "slug": "content",
+              "label": "Content",
+              "type": "portableText"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "query_card",
+      "label": "Query card",
+      "category": "Content",
+      "currentVersion": 1,
+      "versions": [
+        {
+          "version": 1,
+          "fields": [
+            {
+              "slug": "source",
+              "label": "Source collection slug",
+              "type": "string",
+              "required": true
+            },
+            {
+              "slug": "limit",
+              "label": "Maximum published records",
+              "type": "integer",
+              "required": true,
+              "validation": {
+                "min": 1,
+                "max": 24
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "settings": {
+    "title": "Smoky Chill",
+    "tagline": "The cooling balm people call the ice balm.",
+    "url": "https://smokychill.com"
+  },
+  "menus": [
+    {
+      "name": "primary",
+      "label": "Primary Navigation",
+      "items": [
+        {
+          "type": "custom",
+          "label": "Home",
+          "url": "/"
+        },
+        {
+          "type": "custom",
+          "label": "Herbal Ice",
+          "url": "/products/herbal-ice"
+        },
+        {
+          "type": "custom",
+          "label": "Our story",
+          "url": "/about"
+        },
+        {
+          "type": "custom",
+          "label": "FAQ",
+          "url": "/faq"
+        },
+        {
+          "type": "custom",
+          "label": "Contact",
+          "url": "/contact"
+        }
+      ]
+    },
+    {
+      "name": "footer",
+      "label": "Footer Navigation",
+      "items": [
+        {
+          "type": "custom",
+          "label": "Shipping Policy",
+          "url": "/shipping-policy"
+        },
+        {
+          "type": "custom",
+          "label": "Privacy",
+          "url": "/privacy"
+        },
+        {
+          "type": "custom",
+          "label": "Terms",
+          "url": "/terms"
+        }
+      ]
+    }
+  ]
+}

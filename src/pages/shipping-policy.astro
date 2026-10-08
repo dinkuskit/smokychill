@@ -1,0 +1,43 @@
+---
+import { getEmDashEntry } from "emdash";
+import { PortableText } from "emdash/ui";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import LaunchRobotsMeta from "../components/LaunchRobotsMeta.astro";
+import "../features/store-shell/global.css";
+
+const { entry } = await getEmDashEntry("pages", "shipping-policy");
+const fallback = [
+  ["Shipping Policy", "h1"],
+  ["Last updated: October 2026", "normal"],
+  ["Shipping coverage: We currently ship within the United States only.", "normal"],
+  ["Processing time: Orders are typically processed and shipped within 1–3 business days (Monday–Friday, excluding holidays). We do our best to ship same-day when possible.", "normal"],
+  ["Shipping methods: Shipping options are shown at checkout and may include: Free Ground Shipping (when your order qualifies); USPS Ground Advantage (Ground); USPS Priority Mail (Priority).", "normal"],
+  ["Packaging and discretion: All orders are shipped discreetly under the name SMCLLC. Packages are sent in a standard, unbranded cardboard box with no indication of the contents or company branding on the outside.", "normal"],
+  ["Delivery time estimates: Delivery time begins after your order ships: USPS Ground Advantage: expected 2–5 business days. USPS Priority Mail: expected 2–3 days (not guaranteed). Carrier delays can occur due to volume, weather, and other factors outside our control.", "normal"],
+  ["Tracking: Tracking is provided once your order ships. Tracking may take 24–48 hours to update after the carrier's first scan.", "normal"],
+  ["Address accuracy: Please double-check your shipping address at checkout. If an address is incomplete or incorrect, delivery may be delayed, returned, or marked delivered to the wrong location.", "normal"],
+  ["Delivery issues, missing packages, and claims: We're responsible for processing your order accurately and handing it off to USPS. Once USPS accepts the package and tracking begins, delivery timing and handling are controlled by the carrier. If there's a delivery issue, contact us. We'll help you follow the right USPS process. Reshipments or refunds are not automatic and are handled case-by-case based on tracking, address verification, and the USPS outcome.", "normal"],
+  ["If the package appears delayed or tracking isn't moving: Start with USPS help resources and allow normal transit time. If it continues without delivery, we can assist you with the next appropriate USPS step, including a Missing Mail search when applicable.", "normal"],
+  ["If tracking shows \"Delivered\" but you don't have it: Before it can be treated as lost, you must: check around the delivery location (porch, side door, mailbox, parcel locker); check with household members or building staff; contact your local post office to request investigation of the delivery scan. We'll provide the details we have (tracking, ship date) and assist with the process.", "normal"],
+  ["When a USPS claim becomes applicable: USPS has specific claim windows and documentation requirements for insured services. If a claim is applicable, we'll assist with the information we can provide and guide you on what USPS requires.", "normal"],
+  ["Damaged packages: If your package arrives damaged, contact us promptly with photos of: the shipping box; the shipping label; the damaged product(s).", "normal"],
+  ["Contact: If you need help with a delivery issue, Contact Us.", "normal"],
+];
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width" />
+    <title>Shipping Policy | Smoky Chill</title>
+    <meta name="description" content="Smoky Chill shipping policy." />
+    <LaunchRobotsMeta />
+  </head>
+  <body>
+    <SiteHeader />
+    <main class="simple-page policy-page">
+      {entry?.data.content ? <PortableText value={entry.data.content} /> : fallback.map(([text, style]) => style === "h1" ? <h1>{text}</h1> : <p>{text}</p>)}
+    </main>
+    <SiteFooter />
+  </body>
+</html>

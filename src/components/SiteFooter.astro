@@ -1,0 +1,17 @@
+---
+import { getMenu } from "emdash";
+const menu = await getMenu("footer");
+---
+<footer class="site-footer">
+  <div>
+    <strong>Manufactured by Smoky Product Company</strong>
+    <span>55 Eagles Nest Trail, Murphy, NC 28906</span>
+  </div>
+  <nav aria-label="Footer">
+    {(menu?.items ?? [
+      { label: "Shipping Policy", url: "/shipping-policy" },
+      { label: "Privacy", url: "/privacy" },
+      { label: "Terms", url: "/terms" },
+    ]).map((item) => <a href={item.url}>{item.label}</a>)}
+  </nav>
+</footer>

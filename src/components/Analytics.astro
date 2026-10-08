@@ -1,0 +1,40 @@
+---
+// Astro's Cloudflare adapter no longer exposes runtime bindings through
+// Astro.locals.runtime.env. Keep measurement IDs build-time env-bound and
+// empty by default; no browser placeholder can activate a tracker.
+const ga4Id = import.meta.env.PUBLIC_GA4_MEASUREMENT_ID;
+const metaPixelId = import.meta.env.PUBLIC_META_PIXEL_ID;
+const xPixelId = import.meta.env.PUBLIC_X_PIXEL_ID;
+---
+{ga4Id && (
+  <>
+    <script async src={`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(ga4Id)}`}></script>
+    <script is:inline define:vars={{ ga4Id }}>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){window.dataLayer.push(arguments);}
+      gtag("js", new Date());
+      gtag("config", ga4Id, { anonymize_ip: true });
+    </script>
+  </>
+)}
+{metaPixelId && (
+  <script is:inline define:vars={{ metaPixelId }}>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version="2.0";n.queue=[];t=b.createElement(e);
+    t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
+    (window, document,"script","https://connect.facebook.net/en_US/fbevents.js");
+    fbq("init", metaPixelId);
+    fbq("track", "PageView");
+  </script>
+)}
+{metaPixelId && <noscript><img height="1" width="1" style="display:none" alt="" src={`https://www.facebook.com/tr?id=${encodeURIComponent(metaPixelId)}&ev=PageView&noscript=1`} /></noscript>}
+{xPixelId && (
+  <>
+  <script async src="https://static.ads-twitter.com/uwt.js"></script>
+  <script is:inline define:vars={{ xPixelId }}>
+    window.twq = window.twq || function(){(window.twq.q = window.twq.q || []).push(arguments)};
+    window.twq("config", xPixelId);
+  </script>
+  </>
+)}
