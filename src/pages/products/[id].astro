@@ -17,7 +17,7 @@ const cmsCollection = collections.find((group) => group.items.some((candidate) =
 const cmsItem = cmsCollection?.items.find((candidate) => productPath(candidate.id) === Astro.url.pathname);
 const item = cmsItem ?? (Astro.url.pathname === "/products/herbal-ice" ? herbalIceFallback : undefined);
 const collection = cmsCollection ?? (item ? { name: "Herbal Ice", items: [item] } : undefined);
-const collectionHref = cmsCollection ? collectionPath(collection.name) : "/";
+const collectionHref = cmsCollection ? collectionPath(cmsCollection.name) : "/";
 if (!item) Astro.response.status = 404;
 const managed = item?.availabilitySource === "managed" ? demonstrations?.managed ?? null : null;
 const unmanaged = item?.availabilitySource === "unmanaged" ? demonstrations?.unmanaged ?? null : null;
