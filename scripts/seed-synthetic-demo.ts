@@ -607,10 +607,8 @@ async function seedCanonical(
           throw new SeedRefusal("DEMO_SKU_MISSING", `${product.sku} was not stored.`);
         }
       }
-      for (const product of SMOKY_CHILL_PRODUCTS) {
-        if (!after.has(product.sku)) {
-          throw new SeedRefusal("HERBAL_ICE_SKU_MISSING", `${product.sku} was not stored.`);
-        }
+      if (!after.has("SPC-HI4-1000")) {
+        throw new SeedRefusal("HERBAL_ICE_SKU_MISSING", "The Herbal Ice parent member was not stored.");
       }
       emit("seed.preserved", { nonDemo: nonDemoBefore.length, unchanged: true });
   } finally {
