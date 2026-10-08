@@ -5,9 +5,9 @@
 
 import { createHash } from "node:crypto";
 
-export const DEMO_WORKER_NAME = "smokychill";
+export const DEMO_WORKER_NAME = "dinkuskit-template-demo";
 export const DEMO_D1_BINDING = "DB";
-export const DEMO_D1_NAME = "smokychill";
+export const DEMO_D1_NAME = "dinkuskit-template-demo";
 export const DEMO_COMPATIBILITY_DATE = "2026-09-30";
 // Cloudflare namespace_id is a string containing a positive integer, unique per account.
 export const DEMO_RATE_NAMESPACE = "2026100101";
