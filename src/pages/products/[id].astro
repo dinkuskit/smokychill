@@ -22,7 +22,7 @@ const item = cmsItem ?? (Astro.url.pathname === "/products/herbal-ice" ? herbalI
 const collection = cmsCollection ?? (item ? { name: "Herbal Ice", items: [item] } : undefined);
 const collectionHref = cmsCollection ? collectionPath(cmsCollection.name) : "/";
 const products = await getEmDashCollection<"products", Record<string, unknown>>("products", { status: "published" });
-const cmsProduct = products.entries.find((entry) => entry.slug === "herbal-ice");
+const cmsProduct = products.entries.find((entry) => entry.id === "herbal-ice" || entry.id === "herbal-ice-draft");
 const bootstrapProduct = (seed.content.products as { slug: string; data: Record<string, unknown> }[]).find((product) => product.slug === "herbal-ice");
 const productData = (cmsProduct?.data ?? bootstrapProduct?.data ?? {}) as Record<string, unknown>;
 const cmsStrengths = Array.isArray(productData.strengths) ? productData.strengths.filter((value): value is Record<string, unknown> =>
