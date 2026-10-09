@@ -17,40 +17,90 @@ do not add payment provider keys.
 git clone https://origin.cursor.com/smoky/smokychill.git
 cd smokychill
 pnpm install --frozen-lockfile
-pnpm build
+# Cloudflare Workers build (Node adapter is the default without this env)
+DINKUS_HOSTING_PROFILE=cloudflare pnpm build
 ```
 
-## 2. Create D1 and R2
+`DINKUS_HOSTING_PROFILE=cloudflare` selects `@astrojs/cloudflare`, D1/R2
+bindings, and the Worker `scheduled` export. A plain `pnpm build` produces the
+local Node adapter and is not a deployable Worker.
+
+## 2. Create D1, R2, and SESSION KV
 
 ```sh
 pnpm exec wrangler d1 create smokychill
 pnpm exec wrangler r2 bucket create smokychill-media
+# Astro Cloudflare sessions binding (required by the cloudflare adapter build)
+pnpm exec wrangler kv namespace create smokychill-session
 ```
 
-Copy the D1 UUID from `wrangler d1 create`. The committed `wrangler.jsonc`
-**omits** that id on purpose (seed/deploy policy). Materialize it only in an
-ignored overlay, for example:
+Copy the D1 UUID from `wrangler d1 create` and the KV id from
+`wrangler kv namespace create`. The committed `wrangler.jsonc` **omits** those
+ids on purpose (seed/deploy policy). Materialize them only in an ignored
+overlay.
+
+### Deploy overlay (Astro `dist/server` entry)
+
+Wrangler must deploy the **Astro-built** Worker entry under `dist/server/`, not
+`src/worker.ts`. Source `main` fails to resolve Astro/EmDash virtual modules.
+Put the deploy config **next to** the built entry so `no_bundle` can upload the
+`chunks/` module graph:
 
 ```sh
-mkdir -p .artifacts
+mkdir -p .artifacts dist/server
+# After DINKUS_HOSTING_PROFILE=cloudflare pnpm build:
 node -e '
 const { readFileSync, writeFileSync } = require("fs");
 const id = process.env.SMOKYCHILL_D1_DATABASE_ID;
+const kvId = process.env.SMOKYCHILL_SESSION_KV_ID;
+const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
 if (!id) throw new Error("Set SMOKYCHILL_D1_DATABASE_ID to the UUID from wrangler d1 create");
+if (!kvId) throw new Error("Set SMOKYCHILL_SESSION_KV_ID to the id from wrangler kv namespace create smokychill-session");
+if (!accountId) throw new Error("Set CLOUDFLARE_ACCOUNT_ID");
 const raw = readFileSync("wrangler.jsonc","utf8")
   .replace(/\/\*[\s\S]*?\*\//g,"")
   .replace(/^\s*\/\/.*$/gm,"");
-const cfg = JSON.parse(raw);
-cfg.d1_databases[0].database_id = id;
+const base = JSON.parse(raw);
+const cfg = {
+  name: base.name,
+  main: "entry.mjs",
+  compatibility_date: base.compatibility_date,
+  compatibility_flags: base.compatibility_flags,
+  workers_dev: false,
+  preview_urls: false,
+  account_id: accountId,
+  no_bundle: true,
+  rules: [{ type: "ESModule", globs: ["**/*.js", "**/*.mjs"] }],
+  routes: base.routes,
+  vars: base.vars,
+  assets: {
+    binding: "ASSETS",
+    directory: "../client",
+    run_worker_first: true,
+  },
+  d1_databases: [{
+    binding: "DB",
+    database_name: "smokychill",
+    database_id: id,
+  }],
+  r2_buckets: [{ binding: "MEDIA", bucket_name: "smokychill-media" }],
+  kv_namespaces: [{ binding: "SESSION", id: kvId }],
+  images: { binding: "IMAGES" },
+  ratelimits: base.ratelimits,
+  observability: base.observability,
+};
+writeFileSync("dist/server/wrangler.deploy.jsonc", JSON.stringify(cfg, null, 2) + "\n");
 writeFileSync(".artifacts/wrangler.deploy.jsonc", JSON.stringify(cfg, null, 2) + "\n");
 '
 ```
 
-Use that overlay for migrate/seed/deploy:
+Use the **colocated** overlay for deploy (paths resolve from `dist/server/`):
 
 ```sh
-export WRANGLER_CONFIG=.artifacts/wrangler.deploy.jsonc
+export WRANGLER_CONFIG=dist/server/wrangler.deploy.jsonc
 ```
+
+Do not commit either overlay. Reuse existing D1 / R2 / KV if they already exist.
 
 ## 3. Apply EmDash migrations + CMS seed (product page content)
 
@@ -107,11 +157,12 @@ Typical names to confirm against current EmDash Cloudflare docs at deploy time
 (values never belong in git):
 
 - `EMDASH_AUTH_SECRET` (or the current EmDash session-signing secret name)
+- `EMDASH_ENCRYPTION_KEY` (prefix `emdash_enc_v1_`; generate with `emdash secrets generate`)
 - Any Commerce/Payments secret names **only after** checkout is intentionally
   enabled later — **do not set payment keys for this stand-up**
 
 Bindings (not secrets): `DB` (D1 `smokychill`), `MEDIA` (R2 `smokychill-media`),
-`ASSETS`, `RATE_LIMITER`.
+`SESSION` (KV `smokychill-session`), `IMAGES`, `ASSETS`, `RATE_LIMITER`.
 
 ## 6. Deploy
 
@@ -119,11 +170,19 @@ Bindings (not secrets): `DB` (D1 `smokychill`), `MEDIA` (R2 `smokychill-media`),
 custom-domain routes for `smokychill.com` / `www.smokychill.com`.
 
 ```sh
+# Requires a prior DINKUS_HOSTING_PROFILE=cloudflare pnpm build
 pnpm exec wrangler deploy --config "$WRANGLER_CONFIG"
 ```
 
+`$WRANGLER_CONFIG` must be the colocated `dist/server/wrangler.deploy.jsonc`
+overlay (`main: "entry.mjs"`, `no_bundle: true`). Deploying with
+`main: ./src/worker.ts` fails on unresolved `virtual:emdash/*` /
+`virtual:astro-*` modules.
+
 Attach the custom domains in the Cloudflare dashboard if the first deploy
-prompts for DNS/zone confirmation.
+prompts for DNS/zone confirmation. If wrangler refuses because a DNS record
+already exists on the hostname, report the record (type and target) rather
+than deleting it.
 
 ## 7. Verify production (expect noindex)
 
@@ -141,7 +200,7 @@ bin/verify-site https://smokychill.com --demo-host
 
 ## Blockers the deployer must supply
 
-1. Real D1 UUID in the ignored deploy overlay (not committed).
+1. Real D1 UUID and SESSION KV id in the ignored deploy overlay (not committed).
 2. Cloudflare account auth (`wrangler login` / API token) — this agent has none.
 3. DNS / custom-domain acceptance for `smokychill.com` and `www.smokychill.com`.
 4. First EmDash admin user created in `/_emdash/admin` after deploy.
