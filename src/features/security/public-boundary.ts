@@ -7,6 +7,13 @@ export interface SecurityPolicyCheck {
 const EXACT_ALLOWED_PATHS = new Set([
   "/",
   "/home",
+  "/about",
+  "/faq",
+  "/contact",
+  "/privacy",
+  "/terms",
+  "/shipping-policy",
+  "/shipping/returns",
   "/cart",
   "/checkout/success",
   "/checkout/cancel",

@@ -26,6 +26,13 @@ describe("public boundary access evaluation", () => {
   it("allows standard storefront shopper GET endpoints", () => {
     expect(evaluatePublicBoundary("GET", "/").allowed).toBe(true);
     expect(evaluatePublicBoundary("GET", "/home").allowed).toBe(true);
+    expect(evaluatePublicBoundary("GET", "/about").allowed).toBe(true);
+    expect(evaluatePublicBoundary("GET", "/faq").allowed).toBe(true);
+    expect(evaluatePublicBoundary("GET", "/contact").allowed).toBe(true);
+    expect(evaluatePublicBoundary("GET", "/privacy").allowed).toBe(true);
+    expect(evaluatePublicBoundary("GET", "/terms").allowed).toBe(true);
+    expect(evaluatePublicBoundary("GET", "/shipping-policy").allowed).toBe(true);
+    expect(evaluatePublicBoundary("GET", "/shipping/returns").allowed).toBe(true);
     expect(evaluatePublicBoundary("GET", "/cart").allowed).toBe(true);
     expect(evaluatePublicBoundary("GET", "/sitemap.xml").allowed).toBe(true);
     expect(evaluatePublicBoundary("GET", "/sitemap-commerce.xml").allowed).toBe(true);
