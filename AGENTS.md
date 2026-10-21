@@ -65,6 +65,8 @@ maintainer access and an immutable commit pin are supplied.
 
 ## Required checks
 
+Establish a fast baseline and iterate with `bin/verify-web quick` plus targeted
+Playwright specs (`pnpm exec playwright test <spec> --project=chromium-desktop`).
 Run `pnpm verify` before closeout. Browser proof must exercise desktop Chromium
 and a mobile viewport. The explicit development integration profile observes the managed `8 -> 5 -> 8` Inventory sequence,
 and observe unmanaged manual availability cycle through in-stock, out-of-stock,
