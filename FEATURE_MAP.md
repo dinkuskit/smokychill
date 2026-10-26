@@ -23,7 +23,7 @@ seeded page; returns remains a blocker.
 LegitScript preparation lives in `docs/legitscript-prep.md`; optional,
 ID-gated GA4/Meta/X measurement is documented in `docs/tracking.md`.
 
-This map is the repository contract for bounded template work. Features own
+This map is the repository contract for bounded Smoky Chill storefront work. Features own
 their implementation, tests, and public entry. Cross-feature access goes
 through its declared public entry. `index.ts` is the default. The guest cart
 keeps a pure browser entry there and exposes its server-rendered Astro
