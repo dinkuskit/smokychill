@@ -265,7 +265,7 @@
       "choice": "Add identity/positive-integer quantity intent, validated persistent browser cache, desktop/mobile cart editing and current Commerce snapshot presentation. Keep checkout inactive until the supported exact Commerce contract/artifact arrives; never infer payment confirmation from return URLs or implement pricing/order authority.",
       "context_ref": "https://github.com/dinkuskit/template-store/issues/20;https://github.com/dinkuskit/commerce/issues/32",
       "created_at": "2026-09-30T17:54:10+00:00",
-      "deferred_reason": null,
+      "deferred_reason": "'Keep checkout inactive until the supported exact Commerce contract/artifact arrives' is a sequencing pause locked as an active prohibition, and the 'only for this bounded shopper feature' issue20 scope makes the rest slice-bound.",
       "delivery_ref": null,
       "dependencies": [],
       "domain": "authorized guest cart presentation and Commerce handoff",
@@ -311,6 +311,24 @@
           "review_source_identity": null,
           "to": "verified",
           "verification_ref": null
+        },
+        {
+          "at": "2026-11-01T04:28:00+00:00",
+          "choice": "Add identity/positive-integer quantity intent, validated persistent browser cache, desktop/mobile cart editing and current Commerce snapshot presentation. Keep checkout inactive until the supported exact Commerce contract/artifact arrives; never infer payment confirmation from return URLs or implement pricing/order authority.",
+          "from": "verified",
+          "implementation_ref": "file:src/features/guest-cart/index.ts;file:docs/implementation/guest-cart.md",
+          "note": "'Keep checkout inactive until the supported exact Commerce contract/artifact arrives' is a sequencing pause locked as an active prohibition, and the 'only for this bounded shopper feature' issue20 scope makes the rest slice-bound.",
+          "repair_required": false,
+          "review_classifications": [
+            "defer",
+            "human_gate",
+            "reject_false_positive"
+          ],
+          "review_ref": "file:.grilltrack/proof/guest-cart-20260930/PROOF.md",
+          "review_result": "findings",
+          "review_source_identity": "git:cbf1bfc2000284da97891951d3657cb8ec4ec086",
+          "to": "deferred",
+          "verification_ref": "file:.grilltrack/proof/guest-cart-20260930/PROOF.md"
         }
       ],
       "id": "guest-cart-005",
@@ -339,9 +357,9 @@
       "review_ref": "file:.grilltrack/proof/guest-cart-20260930/PROOF.md",
       "review_result": "findings",
       "review_source_identity": "git:cbf1bfc2000284da97891951d3657cb8ec4ec086",
-      "status": "verified",
+      "status": "deferred",
       "superseded_by": null,
-      "updated_at": "2026-09-30T18:55:23+00:00",
+      "updated_at": "2026-11-01T04:28:00+00:00",
       "verification_ref": "file:.grilltrack/proof/guest-cart-20260930/PROOF.md"
     },
     {
@@ -656,6 +674,20 @@
           "review_source_identity": null,
           "to": "verified",
           "verification_ref": null
+        },
+        {
+          "at": "2026-11-01T04:28:00+00:00",
+          "choice": "demo.dinkuskit.com hosts the actual EmDash 1.0.1 Template Store with isolated synthetic Commerce catalog and guest cart, clear demo labeling, protected admin and no real payments or fulfillment; actual test checkout remains gated on qualified capabilities.",
+          "from": "verified",
+          "implementation_ref": "file:src/worker.ts",
+          "note": "It still says 'demo.dinkuskit.com hosts the actual EmDash 1.0.1 Template Store' as verified, although v1-demo-003 says no verified demo URL exists and hosting remains gated, so future agents would assume a live hosted surface.",
+          "repair_required": false,
+          "review_classifications": [],
+          "review_ref": null,
+          "review_result": null,
+          "review_source_identity": null,
+          "to": "superseded",
+          "verification_ref": "file:.grilltrack/proof/hosted-demo-20261001/PROOF.md"
         }
       ],
       "id": "hosted-demo-007",
@@ -668,9 +700,9 @@
       "review_ref": null,
       "review_result": null,
       "review_source_identity": null,
-      "status": "verified",
-      "superseded_by": null,
-      "updated_at": "2026-10-01T07:24:59+00:00",
+      "status": "superseded",
+      "superseded_by": "v1-demo-003",
+      "updated_at": "2026-11-01T04:28:00+00:00",
       "verification_ref": "file:.grilltrack/proof/hosted-demo-20261001/PROOF.md"
     },
     {
@@ -1366,5 +1398,5 @@
   "status": "active",
   "title": "Inventory-off v1 template and exact Commerce pairing",
   "track_id": "gt-20260930163954-43d0a5",
-  "updated_at": "2026-10-08T17:05:10+00:00"
+  "updated_at": "2026-11-01T04:28:00+00:00"
 }
