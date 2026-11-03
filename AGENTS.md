@@ -1,6 +1,9 @@
 # Agent Contract
 
-This public repository owns the generic DinkusKit store starter for EmDash.
+This public repository owns the Smoky Chill merchant storefront for Herbal Ice
+on smokychill.com. It derives from the DinkusKit EmDash store template; it is
+not the generic starter. Preserve its arctic brand, product identity, and
+merchant-specific launch gates.
 Assume every committed byte is immediately public.
 
 ## Running GrillTrack
@@ -11,24 +14,47 @@ skills into ignored `.cursor/skills/`. Use
 The CLI-only ledger rule remains in force. SmokySkills is enabled only after
 maintainer access and an immutable commit pin are supplied.
 
+## Organization direction and research
+
+The [organization vision](https://github.com/dinkuskit/.github/blob/36aab690a7ef66dc119aab70e258ea979c54841a/VISION.md) and
+[planning boundaries](https://github.com/dinkuskit/.github/blob/36aab690a7ef66dc119aab70e258ea979c54841a/ROADMAP.md) describe the shared direction: independently
+useful connected tools for one accountable business operator, optional first-party
+or merchant-selected assistants, and adoption in useful stages. They do not
+replace this repository's current runtime contracts or establish new capability,
+release, deployment, or action authority.
+
+For a material product, architecture, implementation, or verification question,
+use the pinned `emdash-commerce` skill and its
+[selective REA guidance](https://github.com/saariuslystoned/SaariusSkills/blob/23f2bb1208b3baa7aedaa87faec00395f9bdd061/skills/emdash-commerce/SKILL.md). Research the actual question; routine fixes do
+not require a new research cycle. Keep research findings, accepted designs, and
+active work distinct, and reuse the owning issue or decision record. Public
+outputs must be original and public-safe.
+
 ## Source priority
 
 1. This file.
-2. `design.md` for the current product-wide visual contract.
-3. `FEATURE_MAP.md` for feature ownership and verification.
-4. `.grilltrack/ledger.json`, changed only through the GrillTrack CLI.
-5. Current source, tests, and committed proof.
+2. The linked organization vision and planning boundaries for shared direction.
+3. `README.md` for the Herbal Ice merchant-store scope and launch blockers.
+4. `design.md` for this repository's visual contract.
+5. `FEATURE_MAP.md` for feature ownership and verification.
+6. `.grilltrack/ledger.json`, changed only through the GrillTrack CLI.
+7. Current source, tests, and committed proof for implemented behavior.
 
 ## Product boundary
 
-- The shipping v1 profile is a neutral Commerce storefront with Inventory off.
-  Managed-stock integration remains a separate development/proof profile. The
-  starter does not own those packages' domain rules.
+- This merchant storefront uses Commerce with Inventory off. Inherited
+  managed-stock demonstrations remain a separate development/proof profile,
+  not Herbal Ice inventory or permission to change its design. This store does
+  not own those packages' domain rules.
+- Preserve the arctic theme, Herbal Ice product/variant identities, draft-only
+  copy and temporary-image status. Keep checkout unavailable and indexing off
+  until the existing launch gates are satisfied and separately approved.
+  README.md and DEPLOY.md name those gates; this alignment does not clear them.
 - Fresh shipping products use Commerce authoritative prices and manual
   availability. Stock management is Coming soon and unavailable in the paired
   Commerce release. Preserve existing managed data and fail-closed behavior;
   never auto-convert it or invent a fallback ledger.
-- TemplateStore ships alongside its matching exact Commerce release/artifact.
+- This store inherits TemplateStore's exact Commerce pairing requirements.
   Require the owner's immutable artifact identity and digest before claiming
   a paired clean install; source aliases prove only development integration.
 - All DinkusKit plugins must be registry-enabled. Shipping template defaults
@@ -53,7 +79,8 @@ maintainer access and an immutable commit pin are supplied.
 ## Layout
 
 - `src/features/` owns co-located storefront features.
-- `seed/` owns neutral EmDash review content.
+- `seed/` owns draft Herbal Ice and policy bootstrap content. Once initialized,
+  the CMS owns editorial content; do not overwrite it by reseeding.
 - `tests/` owns deterministic and browser acceptance.
 - `bin/verify-web` is the canonical verification entry.
 - `skills/managed-product-verification/` documents the project-local verifier.
