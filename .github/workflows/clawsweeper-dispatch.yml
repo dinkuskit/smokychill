@@ -47,8 +47,8 @@ jobs:
         id: live
         env:
           GH_TOKEN: ${{ github.token }}
-          TARGET_REPO: dinkuskit/template-store
-          TARGET_ID: '1306882668'
+          TARGET_REPO: dinkuskit/smokychill
+          TARGET_ID: '1413753959'
           PR_NUMBER: ${{ github.event.pull_request.number || github.event.issue.number || inputs.pr_number }}
           MANUAL_PUBLISH: ${{ inputs.publish }}
         shell: bash
@@ -108,8 +108,8 @@ jobs:
     permissions: {}
     uses: dinkuskit/clawsweeper/.github/workflows/dinkuskit-native-canary.yml@d01c55c5faf57b09d08de55fe55581cdfa3f8352
     with:
-      target_repository: template-store
-      target_repository_id: '1306882668'
+      target_repository: smokychill
+      target_repository_id: '1413753959'
       pr_number: ${{ needs.bind.outputs.pr_number }}
       expected_base_sha: ${{ needs.bind.outputs.base_sha }}
       expected_head_sha: ${{ needs.bind.outputs.head_sha }}
